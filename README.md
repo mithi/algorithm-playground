@@ -11,6 +11,7 @@ This repository will contain my solutions to various programming exercises in Py
 - The Algorithm Design Manual, Steven Skiena 
 - Algorithms, Robert Sedgewick
 - Grokking Algorithms, Aditya Bhargava
+- Learning Algorithms Through Programming and Puzzle Solving, Alexander S. Kulikov and Pavel Pevzner
 
 ### Repositories
 - [Interactive Coding Challenge](https://github.com/donnemartin/interactive-coding-challenges)
