@@ -21,9 +21,7 @@ This repository will contain my solutions to various programming exercises in Py
 ### Sites
 - [LeetCode](https://leetcode.com/)
 - [FireCode](https://www.firecode.io/) 
-- [Interactive Python](http://interactivepython.org/)
 
 ### Videos
 - [Princeton Algorithms and Data Structure Videos](https://www.youtube.com/channel/UCirCLaGiw_zT6vJNI_At6ag)
-- [Khan Academy Videos](https://www.khanacademy.org/computing/computer-science/algorithms)
 - [Coursera: Master Algorithmic Programming Techniques](https://www.coursera.org/specializations/data-structures-algorithms)
