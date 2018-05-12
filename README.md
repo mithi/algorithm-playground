@@ -23,5 +23,8 @@ This repository will contain my solutions to various programming exercises in Py
 - [FireCode](https://www.firecode.io/) 
 
 ### Videos
-- [Princeton Algorithms and Data Structure Videos](https://www.youtube.com/channel/UCirCLaGiw_zT6vJNI_At6ag)
+- [Princeton Algorithms and Data Structure Videos, 	Robert Sedgewick](https://www.youtube.com/channel/UCirCLaGiw_zT6vJNI_At6ag)
 - [Coursera: Master Algorithmic Programming Techniques](https://www.coursera.org/specializations/data-structures-algorithms)
+
+# Advanced
+- - [Advanced Algorithms (Jelani Nelson, Harvard)](http://people.seas.harvard.edu/~minilek/cs224/fall14/lec.html)
