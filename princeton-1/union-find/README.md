@@ -23,11 +23,6 @@
 - `N` union commands on `N` nodes takes `N^2` time, 
 - It will take a lot of time to connect a lot of nodes
 
-| `init()`      | `union()`     | `connected()`|
-| ------------- |:-------------:| ------------:|
-| N             | N             | 1            |
-
-
 ![](./img/UF-3.png)
 ![](./img/UF-4.png)
 
@@ -38,6 +33,10 @@
 - Root of `i` is `id[id[id[...id[i]...]]]`.
 - If `p` and `q` have the same root, then they are connected 
 - To merge components containing `p` and `q`, set the `id` of `p`'s root to the `id` of `q`'s root.
-
+##  Quick Union Disadvantage
+- Trees can get too tall which means finding out if two nodes are `connected()` can get too expensive
 ![](./img/UF-5.png)
 ![](./img/UF-6.png)
+
+# QUICK FIND vs QUICK UNION 
+![](./img/UF-7.png)
