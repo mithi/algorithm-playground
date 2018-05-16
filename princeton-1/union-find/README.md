@@ -1,4 +1,4 @@
-# UNION FIND: DYNAMIC CONNECTIVITY (1/5)
+# UNION FIND: DYNAMIC CONNECTIVITY 
 - `Quick Find`
 - Quick Union
 - Improvement: Weighted Quick Union
@@ -31,27 +31,13 @@
 ![](./img/UF-3.png)
 ![](./img/UF-4.png)
 
+# QUICKUNION (LAZY APPROACH)
+## QuickUnion Data Structure
+- Integer array `id[]` of length `N` 
+- Interpretation: `id[i]` is parent of `i`.
+- Root of `i` is `id[id[id[...id[i]...]]]`.
+- If `p` and `q` have the same root, then they are connected 
+- To merge components containing `p` and `q`, set the `id` of `p`'s root to the `id` of `q`'s root.
 
-## SAMPLE CODE 
-```
-from QuickFind import QuickFindUF, QuickFindTests
-
-print('------------')
-QFT = QuickFindTests()
-QFT.run_all_tests()
-print('------------')
-
-edges = [(4, 3), (3, 8), (6, 5), (9, 4),
-  (2, 1), (8, 9), (5, 0), (7, 2), (6, 1)] 
-
-
-UF = QuickFindUF(10)
-
-for x, y in edges:
-  print('current UF state:', UF.id)
-  print('connecting nodes:', x, y)
-  UF.union(x, y)
-
-print('final UF state::', UF.id)
-
-```
+![](./img/UF-5.png)
+![](./img/UF-6.png)
