@@ -3,8 +3,9 @@ class QuickFindUF:
     ''' Initialize union-find object with N objects'''
     # object `k` has a unique id `k` in the beginning.
     # because no two nodes are connected yet.
-    self.N = N
-    self.id = []
+    # all objects of the same id are connected
+    # They belong to the same set (identified by that id) 
+    self.N, self.id = N, []
     
     for k in range(N):
       self.id.append(k)
@@ -32,8 +33,8 @@ class QuickFindTests:
     self.case = [None for i in range(self.N)]
     
     self.case[0] = {
-      'connections': [(4, 3), (3, 8), (6, 5), (9, 4),
-                      (2, 1), (8, 9), (5, 0), (7, 2), (6, 1)],
+      'connections': [(4, 3), (3, 8), (6, 5), (9, 4), 
+        (2, 1), (8, 9), (5, 0), (7, 2), (6, 1)],
       'id': [1, 1, 1, 8, 8, 1, 1, 1, 8, 8]
     }
 
