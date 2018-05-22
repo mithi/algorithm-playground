@@ -1,11 +1,11 @@
 ------------
 # TODO: 
 ------------
-- Make`WeightedUnionPathCompressionUF` class
-- Make`UnionPathCompressionUF` class
+- Make`WeightedQuickUnionPathCompressionUF` class
+- Make`QuickUnionPathCompressionUF` class
 - Add more complicated test cases 
 - Compare run times of all algorithms presented using a case with large number of nodes, unions, and connected queries
-- Make a base `UnionFindTests` class, where all test other classes inherit function from it 
+- Make a base `UnionFindTests` class, where all test other classes inherit functions from it 
 - Convert video files to GIFs
 
 ------------
@@ -57,20 +57,20 @@
 ![](./img/UF-07.png)
 
 ## QUICK FIND 
-- IDEA 
+- **IDEA** 
   - if nodes are connected then they belong to the same set 
   - we assign a unique set id for each set
   - each node is assigned a set id, indicating they belong to that set
-- CHECK IF TWO NODES ARE CONNECTED
+- **CHECK IF TWO NODES ARE CONNECTED**
   - if two nodes have the same id, then they are connected 
-- CONNECT TWO NODES - UNION
+- **CONNECT TWO NODES - UNION**
   - when we connect two currently unconnected nodes (union) say node `A` and node `B`
   - we get the set ID of each node `A's id` and `B's id` 
   - remember that if a node has the same ID as `A` then it is connected to `A`
   - and also if a node has the same ID as `B` then it is connected to `B` 
   - so what we do is look at each node, 
   - if the node has the same ID as `A`, change the ID of that node to the ID of `B`
-- ANALYSIS 
+- **ANALYSIS** 
   - it is quick to know if two nodes are connected though, just check if they have the same ID 
   - everytime we connect two nodes we have to check all the nodes, it is time consuming
 
@@ -78,19 +78,19 @@
 ![](./img/UF-04.png)
 
 ## QUICK UNION 
-- IDEA
+- **IDEA**
   - represent the connectivity of the nodes as a `tree` 
   - each node is assigned a number which represents itself
   - each node is assigned an id which is either itself, or its `parent`
   - if the node's id is itself, then it is a `root` since it has no parent
- - CHECK IF TWO NODES ARE CONNECTED 
+ - **CHECK IF TWO NODES ARE CONNECTED** 
    - to find if two nodes are connected, we check if they have the same root
    - to do that, we have to go up the tree, going to the parent of the parent of the parent...
    - of the node, until we get to the root
-- CONNECT TWO NODES - UNION
+- **CONNECT TWO NODES - UNION**
    - if we connect two nodes `A` and `B`, we assign the id of `A` to the number representing `B` 
    - This makes node `B` the parent of node `A`
-- ANALYSIS
+- **ANALYSIS**
    - it is quick to connect two nodes `A` and `B`..
    - just make the one of the nodes the parent of another node
    - To check if two nodes are connected, this might take a long time
@@ -132,20 +132,20 @@
 ![](./img/UF-10.png)
 
 ## WEIGHTED QUICK UNION ANALYSIS  
-   - CONNECTED TWO NODES (UNION)
+   - **CONNECTED TWO NODES (UNION)**
      - To connect two nodes, we need to "dig-up" the roots which takes time
      - weighted quick union will be faster than the regular one as "digging up" the roots because...
      - the tree is guarranteed to be flatter, the tree won't be that deep
-   - CHECKING IF TWO NODES ARE CONNECTED
+   - **CHECKING IF TWO NODES ARE CONNECTED**
      - as with normal quick union... if two nodes are connected if the have the same root
      - We need "digging-up" the roots, discussion as mentions at 'UNION' algorithm 
 ![](./img/UF-09.png)
 
-   - STATEMENT: ` N >= 2^d` or ` log2 N >= d` where N - size of tree, d - depth of tree
+   - **STATEMENT:** ` N >= 2^d` or ` log2 N >= d` where N - size of tree, d - depth of tree
      - the number of nodes of a tree is always greater than 2 raised to the "depth" of the tree
      - "depth" of the tree how many nodes you have to "touch"...
      - before you get to the farthest "leaf node", leaf nodes don't have "children" nodes
-   - ANALYSIS of STATEMENT
+   - **ANALYSIS of STATEMENT**
      - for statement to be true: minimum size of tree > maximum depth increment 
      - 1. when you merge two trees the size doubles or more
      - 2. when you merge two trees the depth increases or stays the same 
@@ -178,18 +178,18 @@
 # MORE IMPROVEMENT: INCLUDE PATH COMPRESSION
 ------------
 
- - IDEA A. Each time you compute the root of a node p...
+ - **IDEA A.** Each time you compute the root of a node p...
    - ... you can make p's root its parent to make the tree flatter
- - IDEA B. BETTER THAN IDEA A: When you compute the root of a node p...
+ - **IDEA B.** BETTER THAN IDEA A: When you compute the root of a node p...
    - ... notice that the root of all touched (examined/traversed) nodes
    - ....until we get to p's root, all have the same root (which is p's root). 
    - ... so we can make the parent of all of those nodes to be p's root...
    - ... the tree will be so flat! 
- - IDEA C. TWO PASS IMPLEMENTATION
+ - **IDEA C.** TWO PASS IMPLEMENTATION
    - We can implement IDEA B by taking note of all examined/traversed node...
    - ... when we find the p's root...
    - ...then setting the `id` or parent of all these nodes to their root. 
- - IDEA D. SIMPLER ONE PASS VARIANT
+ - **IDEA D.** SIMPLER ONE PASS VARIANT
    - Better implementation than IDEA C. Every time we find the root of node p,
    - Until we find the root, we make the parent of every other node its grandparent
    - This halves the path length. 
