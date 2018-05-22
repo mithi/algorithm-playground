@@ -1,20 +1,12 @@
 class QuickFindUF:
   def __init__(self, N):
-    ''' Initialize union-find object with N objects'''
-    # object `k` has a unique id `k` in the beginning.
-    # because no two nodes are connected yet.
-    # all objects of the same id are connected
-    # They belong to the same set (identified by that id) 
     self.N, self.id = N, []
     
     for k in range(N):
       self.id.append(k)
     
   def union(self, p, q):
-    ''' Add a connection between p and q'''
-    # change ids of all nodes with p's to q's
-    if self.connected(p, q) is True:
-      return
+    if self.connected(p, q) is True: return
     
     pid = self.id[p]
     for k in range(self.N):
@@ -22,9 +14,10 @@ class QuickFindUF:
         self.id[k] = self.id[q]
     
   def connected(self, p, q):
-    '''Return whether or not p and q are connected'''
-    # node p and q are connected iff they have the same id
     return self.id[p] == self.id[q]
+
+
+# -------------------------------------------------------------------------------------
 
 
 class QuickFindTests:

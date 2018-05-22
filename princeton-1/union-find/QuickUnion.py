@@ -1,10 +1,5 @@
 class QuickUnionUF:
   def __init__(self, N):
-    ''' Initialize union-find object with N objects'''
-    # object `k` has a unique id `k` in the beginning.
-    # because no two nodes are connected yet.
-    # `id[i]` is its parent of `i` if it's not a root
-    # the id of a root is itself
     self.N, self.id = N, []
     
     for k in range(N):
@@ -12,23 +7,14 @@ class QuickUnionUF:
     
   def union(self, p, q):
     ''' Add a connection between p and q'''
-    # make `p`'s root the child of `q`'s root
-    # parent of `p`'s root is `q` root 
-    # `id[i]` is parent of `i`
     p_root, q_root = self.root(p), self.root(q)
     self.id[p_root] = q_root
     
   def connected(self, p, q):
-    '''Return whether or not p and q are connected'''
-    # if `p` and `q` have the same root, then they are connected 
     return self.root(p) == self.root(q)
 
   def root(self, i):
-    '''Go up the i's line of the tree until you find `i`'s root'''
-    # the root's parent is equal to itself
-    #`id[i]` is parent of `i`.`i`'s root is `id[id[id[...id[i]...]]]`
-    while self.id[i] != i: 
-      i = self.id[i]
+    while self.id[i] != i: i = self.id[i]
     return i
 
 
