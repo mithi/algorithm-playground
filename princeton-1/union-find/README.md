@@ -1,4 +1,6 @@
+------------
 # TODO: 
+------------
 - Make`WeightedUnionPathCompressionUF` class
 - Make`UnionPathCompressionUF` class
 - Add more complicated test cases 
@@ -6,7 +8,9 @@
 - Make a base `UnionFindTests` class, where all test other classes inherit function from it 
 - Convert video files to GIFs
 
+------------
 # UNION FIND: DYNAMIC CONNECTIVITY 
+------------
 - Quick Find
 - Quick Union
 - Improvement: Weighted Quick Union
@@ -21,30 +25,38 @@
   - Once two nodes are connected they can't be `unconnected`
 ![](./img/UF-02.png)
 
+------------
 # QUICKFIND (EAGER APPROACH)
+------------
+
 ## QuickFind Data Structure
-- Integer Array `ids[]` of length N 
+- Integer Array `id[]` of length N 
 - Interpretation: `p` and `q` are connected if and only if they have the same ID
 
 ##  QuickFind Disadvantage: Expensive `union()` operation
 - `N` union commands on `N` nodes takes `N^2` time, 
 - It will take a lot of time to connect a lot of nodes
 
+------------
 # QUICKUNION (LAZY APPROACH)
+------------
+
 ## QuickUnion Data Structure
 - Integer array `id[]` of length `N` 
 - Interpretation: `id[i]` is parent of `i`.
 - Root of `i` is `id[id[id[...id[i]...]]]`.
 - If `p` and `q` have the same root, then they are connected 
 - To merge components containing `p` and `q`, set the `id` of `p`'s root to the `id` of `q`'s root.
-##  Quick Union Disadvantage
+##  QuickUnion Disadvantage
 - Trees can get too tall which means finding out if two nodes are `connected()` can get too expensive
 
-# Recap and Discussion 
+------------
+# RECAP 
+------------
 
 ![](./img/UF-07.png)
 
-## Quick Find 
+## QUICK FIND 
 - IDEA 
   - if nodes are connected then they belong to the same set 
   - we assign a unique set id for each set
@@ -65,7 +77,7 @@
 ![](./img/UF-03.png)
 ![](./img/UF-04.png)
 
-## Quick Union 
+## QUICK UNION 
 - IDEA
   - represent the connectivity of the nodes as a `tree` 
   - each node is assigned a number which represents itself
@@ -88,8 +100,10 @@
 ![](./img/UF-05.png)
 ![](./img/UF-06.png)
 
-
+------------
 # WEIGHTED QUICK UNION
+------------
+
 - Modify quick union to avoid tall trees
 - How to modify quick union to avoid tall trees?
   - Keep size of the track of each tree (number of nodes)
@@ -100,11 +114,10 @@
   
 ![](./img/UF-08.png)
 
-  
- ## WEIGHTED QUICK UNION DATA STRUCTURE
+## WEIGHTED QUICK UNION DATA STRUCTURE
  - Same as quick-union except for the following differences
  - Maintain an extra array which keeps the number of objects of the tree with root `i`
- - size of tree = number of objects of that three
+ - size of tree = number of objects of that tree
  - size of tree with root `i` stored at index `i` of array
  - CHECK IF TWO NODES ARE CONNECTED 
    - if nodes `A` and `B` have the same root, then they are connected
@@ -160,8 +173,11 @@
 
 ![](./img/UF-12.png)
 ![](./img/UF-11.png)
-     
-# MORE IMPROVEMENT: INCLUDE PATH COMPRESSION 
+
+------------
+# MORE IMPROVEMENT: INCLUDE PATH COMPRESSION
+------------
+
  - IDEA A. Each time you compute the root of a node p...
    - ... you can make p's root its parent to make the tree flatter
  - IDEA B. BETTER THAN IDEA A: When you compute the root of a node p...
