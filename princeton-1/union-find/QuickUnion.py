@@ -1,12 +1,8 @@
 class QuickUnionUF:
   def __init__(self, N):
-    self.N, self.id = N, []
-    
-    for k in range(N):
-      self.id.append(k)
+    self.N, self.id, self.size = N, [i for i in range(N)], [1]*N
     
   def union(self, p, q):
-    ''' Add a connection between p and q'''
     p_root, q_root = self.root(p), self.root(q)
     self.id[p_root] = q_root
     

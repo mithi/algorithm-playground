@@ -1,9 +1,6 @@
 class QuickFindUF:
   def __init__(self, N):
-    self.N, self.id = N, []
-    
-    for k in range(N):
-      self.id.append(k)
+    self.N, self.id, self.size = N, [i for i in range(N)], [1]*N
     
   def union(self, p, q):
     if self.connected(p, q) is True: return

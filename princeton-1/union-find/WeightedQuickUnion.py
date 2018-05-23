@@ -1,15 +1,13 @@
 class WeightedQuickUnionUF:
   def __init__(self, N):
-    self.N, self.id, self.size = N, [], []
-    for k in range(self.N):
-      self.id.append(k)
-      self.size.append(1)
+    self.N, self.id, self.size = N, [i for i in range(N)], [1]*N
         
   def union(self, p, q):
     p_root, q_root = self.root(p), self.root(q)
     if p_root == q_root: return
     
     p_root_size, q_root_size = self.size[p_root], self.size[q_root]
+    
     if p_root_size < q_root_size:
       self.size[q_root] += p_root_size 
       self.id[p_root] = q_root
