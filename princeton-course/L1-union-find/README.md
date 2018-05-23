@@ -1,8 +1,6 @@
 ------------
 # TODO: 
-- Make`WeightedUnionPathCompressionSinglePassUF` class
 - Make`UnionPathCompressionSinglePassUF` class
-- Make`WeightedUnionPathCompressionTwoPassUF` class
 - Make`UnionPathCompressionTwoPassUF` class
 - Add more complicated test cases 
 - Compare run times of all algorithms presented using a case with large number of nodes, unions, and connected queries
