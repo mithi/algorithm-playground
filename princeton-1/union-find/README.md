@@ -1,11 +1,14 @@
 # TODO: 
-- Make`WeightedUnionPathCompressionUF` class
-- Make`UnionPathCompressionUF` class
+- Make`WeightedUnionPathCompressionSinglePassUF` class
+- Make`UnionPathCompressionSinglePassUF` class
+- Make`WeightedUnionPathCompressionTwoPassUF` class
+- Make`UnionPathCompressionTwoPassUF` class
 - Add more complicated test cases 
 - Compare run times of all algorithms presented using a case with large number of nodes, unions, and connected queries
 - Make a base `UnionFindTests` class, where all test other classes inherit function from it 
 - Convert video files to GIFs
 
+# LECTURES FROM: Robert Sedgewick and Kevin Wayne.
 # UNION FIND: DYNAMIC CONNECTIVITY 
 - Quick Find
 - Quick Union
