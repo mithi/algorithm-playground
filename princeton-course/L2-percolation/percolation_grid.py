@@ -1,3 +1,5 @@
+from union_find import UnionFind
+
 class PercolationGrid:
   '''
   - percolation system model: n-by-n grid of cells. 
