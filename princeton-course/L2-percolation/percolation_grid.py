@@ -111,8 +111,8 @@ class PercolationGrid:
   def node_to_cell(self, i):
     '''Tuple location tuple, (row, column) representing cell
        that corresponds to node i'''
-    r, c = divmod(i, self.n)
-    return r + 1, c 
+    r, c = divmod(i - 1, self.n)
+    return r + 1, c + 1
        
   def check_scope(self, r, c):
     '''
