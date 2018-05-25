@@ -16,7 +16,6 @@ class PercolationGrid:
     self.n = n
     self.cell_count = n * n
     self.unblocked_cell_count = 0
-    self.fraction_of_cells_unblocked = 0.0
     
     # Each cell has a corresponding node number IE 
     # cell at row = 1, column = 1 -> node = 1 
@@ -37,6 +36,11 @@ class PercolationGrid:
     # Corresponding value: unblocked(True), blocked(False)
     # Initially, all nodes (cells) are blocked 
     self.is_node_unblocked = [False for i in range(self.node_count)]
+    
+    # Unblock virtual top and virtual bottom nodes
+    # So nodes can connect with it
+    self.is_node_unblocked[0] = True 
+    self.is_node_unblocked[-1] = True
       
   def unblocked_cells_fraction(self):
     '''Number of unblocked cells over total number of cells'''
@@ -51,7 +55,7 @@ class PercolationGrid:
 
   def is_cell_unblocked(self, r, c):
     '''Is cell unblocked?'''
-    i = self.cell_to_node(r, c)
+    i = self.node_given_cell(r, c)
     return self.is_node_unblocked[i]
 
   def unblock_cell(self, r, c):
@@ -62,28 +66,29 @@ class PercolationGrid:
     # make sure that values given makes sense
     self.check_scope(r, c) 
     # get node representation of cell
-    current = self.cell_to_node(r, c)
+    current = self.node_given_cell(r, c)
     # don't do anything, if the given cell's unblocked
     if self.is_node_unblocked[current] is True: return
     # mark node as unblocked
     self.is_node_unblocked[current] = True
     # remember to update the running unblocked cell total 
-    self.unblocked_cells_count += 1
+    self.unblocked_cell_count += 1
     # connect the node to its neighbors
-    self.connect_unblocked_neighbors(self, current, r, c)
+    self.connect_unblocked_neighbors(current, r, c)
     
   def connect_unblocked_neighbors(self, current, r, c):
     '''
+    Given: node number `current` at grid cell location (`r`, `c`)
     Connect the node to its left, right, top, and bottom 
     neighbors given they exist and are not blocked
     '''
     
     # connect node current to its left and right neighbors 
     if c != 1: 
-      left = self.cell_to_node(r, c - 1)
+      left = self.node_given_cell(r, c - 1)
       self.connect_nodes(current, left)
     if c != self.n: 
-      right = self.cell_to_node(r, c + 1)
+      right = self.node_given_cell(r, c + 1)
       self.connect_nodes(current, right)
     
     # connect node to its top and bottom neighbors
@@ -91,10 +96,10 @@ class PercolationGrid:
     # the "virtual top node" 
     # if the node is at the most bottom row, connect it to 
     # the "virtual bottom node"
-    top, bottom = 0, self.cell_count + 1 
+    top, bottom = 0, -1 
     
-    if r != 1: top = self.cell_to_node(r - 1, c)
-    if r != self.n: bottom = self.cell_to_node(r + 1, c)
+    if r != 1: top = self.node_given_cell(r - 1, c)
+    if r != self.n: bottom = self.node_given_cell(r + 1, c)
     
     self.connect_nodes(current, top)
     self.connect_nodes(current, bottom)
@@ -102,18 +107,24 @@ class PercolationGrid:
   def connect_nodes(self, i, j):
     '''Connect two node i, j if both nodes are unblocked'''
     if self.is_node_unblocked[i] and self.is_node_unblocked[j]:
-      self.UFTree.connect(current, other)    
+      self.UFTree.union(i, j)    
     
-  def cell_to_node(self, r, c):
+  def node_given_cell(self, r, c):
     '''Node representing cell located at row r, column c'''
     return (r - 1) * self.n + c  
     
-  def node_to_cell(self, i):
-    '''Tuple location tuple, (row, column) representing cell
+  def cell_given_node(self, i):
+    '''Location tuple, (row, column) representing cell
        that corresponds to node i'''
     r, c = divmod(i - 1, self.n)
     return r + 1, c + 1
-       
+    
+  def are_connected(self, m, n):
+    '''Are cells m(r1, c1) and n(r2, c2) connected?'''
+    (x, y), (i, j) = m, n
+    a, b = self.node_given_cell(x, y), self.node_given_cell(i, j)
+    return self.UFTree.connected(a, b)
+  
   def check_scope(self, r, c):
     '''
     Assert error if either row or column is
