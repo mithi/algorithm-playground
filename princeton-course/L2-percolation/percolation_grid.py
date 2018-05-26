@@ -1,4 +1,6 @@
 from union_find import UnionFind
+from random import randint
+from numpy import mean, std, sqrt
 
 class PercolationGrid:
   '''
@@ -138,3 +140,62 @@ class PercolationGrid:
     assert type(c) is int, "c: %r ...Not an integer" % c
     assert 0 < c <= self.n, c_message % r
     assert 0 < r <= self.n, r_message % r
+
+
+class PercolationStats:
+  def __init__(self):
+    pass
+
+  def simulate(self, n):
+    '''
+      Given an initial n x n grid with all cells block
+      Randomly unblock a cell until system percolates
+      Return the fraction of cell vacancy which is
+      the percolation threshold estimate
+    '''
+    P = PercolationGrid(n)
+    
+    while P.does_percolate() == False:
+    
+      r, c = randint(1, n), randint(1, n)
+    
+      if P.is_cell_unblocked(r, c) == False:
+        P.unblock_cell(r, c)
+        
+    return P.unblocked_cells_fraction()
+
+  def get_stats(self, results, print_stats):
+    
+    m, s = mean(results), std(results, ddof=1)
+    i =  1.96 * s / sqrt(len(results))
+    lo, hi = m - i, m + i
+    
+    stats = {
+      'mean': m, 
+      'stdev': s, 
+      'low95': lo,
+      'high95': hi
+    }
+    
+    if print_stats == True:
+      for k, v in stats.items():
+        print(k, ":", v)
+    
+    return stats
+
+  def run_simulations(self, n, t, print_stats = False):
+    '''
+      Run `t` independent simulations given an `n` x `n` grid 
+      Return a dictionary containing the following
+        'mean' : sample mean of percolation thresholds 
+        'stdev': sample standard deviation of percolation threshold
+        'low95': low endpoint of 95% confidence interval
+        'high95': high endpoint of 95% confidence interval
+    '''
+    results = []
+    
+    for _ in range(t):
+      results.append(self.simulate(n))
+    
+    return self.get_stats(results, print_stats)
+    
