@@ -1,6 +1,6 @@
 # Algorithm Playground
 
-This repository will contain my solutions to various programming exercises in Python and some of my personal notes about algorithms in general
+This repository will contain my solutions to various programming exercises (in Python, C++, Rust) and some of my personal notes about algorithms in general
 
 # References
 
