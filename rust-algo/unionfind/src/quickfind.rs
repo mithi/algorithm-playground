@@ -2,8 +2,8 @@ use UnionFind;
 
 #[derive(Debug)]
 pub struct QuickFind {
-    n: usize, 
-    id: Vec<usize>,
+    pub n: usize, 
+    pub id: Vec<usize>,
 }
 
 impl UnionFind for QuickFind {
@@ -27,5 +27,45 @@ impl UnionFind for QuickFind {
                 self.id[k] = self.id[q]; 
             }
         }
+    }
+}
+
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_simple_connected() {
+
+        let mut q = QuickFind::new(10);
+        
+        let i = q.connected(4, 7);
+        let j = q.connected(3, 6);
+        let k = q.connected(1, 2);
+        
+        assert!(!i);
+        assert!(!j);
+        assert!(!k);
+    }
+
+    #[test]
+    fn test_simple_union() {
+
+        let mut q = QuickFind::new(10);
+
+        q.union(4, 3);
+        assert_eq!(q.id, vec![0, 1, 2, 3, 3, 5, 6, 7, 8, 9]);
+
+        q.union(3, 8);
+        assert_eq!(q.id, vec![0, 1, 2, 8, 8, 5, 6, 7, 8, 9]);
+
+        let i = q.connected(4, 3);
+        let j = q.connected(8, 3);
+        let k = q.connected(4, 8);
+
+        assert!(i);
+        assert!(j);
+        assert!(k);
     }
 }
