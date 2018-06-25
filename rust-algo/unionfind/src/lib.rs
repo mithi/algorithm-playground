@@ -9,6 +9,3 @@ pub trait UnionFind {
     fn union(&mut self, p: usize, q: usize); 
     fn connected(&mut self, p: usize, q: usize) -> bool;
 }
-
-
-
