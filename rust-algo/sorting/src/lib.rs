@@ -24,6 +24,7 @@ pub mod selection {
     }
 }
 
+
 pub mod insertion {
 
     pub fn sort<T: PartialOrd>(v: &mut [T]) {
