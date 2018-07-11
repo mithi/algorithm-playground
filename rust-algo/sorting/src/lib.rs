@@ -1,3 +1,15 @@
+extern crate rand;
+use rand::{thread_rng, Rng};
+
+pub fn shuffle<T: PartialOrd>(v: &mut [T]) {
+
+    let mut rng = thread_rng();
+    for i in 0.. v.len() {
+        let r = rng.gen_range(0, i + 1);
+        v.swap(i, r);
+    }
+}
+
 pub mod selection {
 
     pub fn sort<T: PartialOrd>(v: &mut [T]) {

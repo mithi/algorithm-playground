@@ -3,6 +3,7 @@ extern crate sorting;
 use sorting::selection;
 use sorting::insertion;
 use sorting::shell;
+use sorting::shuffle;
 use std::fmt::Debug;
 
 fn display_sort<T, F>(x: &[T], sort: F)
@@ -52,6 +53,18 @@ fn main() {
 
     println!("\nstart: {:?}", array);
     shell::sort(&mut array, &gaps);
+    println!("end: {:?} \n", array);
+
+    println!("\n --------------- \n Shuffle \n --------------- \n");
+    let mut array: Vec<usize> = (0..30).collect();
+
+    println!("\nstart: {:?}", array);
+    shuffle(&mut array);
+    println!("end: {:?} \n", array);
+
+    let mut array = v_string.clone();
+    println!("\nstart: {:?}", array);
+    shuffle(&mut array);
     println!("end: {:?} \n", array);
 }
 
