@@ -3,6 +3,7 @@ extern crate sorting;
 use sorting::selection;
 use sorting::insertion;
 use sorting::shell;
+use sorting::merge;
 use sorting::shuffle;
 use std::fmt::Debug;
 
@@ -53,6 +54,13 @@ fn main() {
 
     println!("\nstart: {:?}", array);
     shell::sort(&mut array, &gaps);
+    println!("end: {:?} \n", array);
+
+    println!("\n --------------- \n Merge Sort \n --------------- \n");
+
+    let mut array: Vec<usize> = vec![8, 29, 15, 22, 23, 30, 16, 9, 11, 25, 14, 18, 28, 4, 7, 21, 23];
+    println!("\nstart: {:?}", array);
+    merge::sort(&mut array);
     println!("end: {:?} \n", array);
 
     println!("\n --------------- \n Shuffle \n --------------- \n");
