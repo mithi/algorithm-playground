@@ -1,8 +1,8 @@
 extern crate rand;
 use rand::{thread_rng, Rng};
+pub mod tests;
 
-
-pub fn shuffle<T: PartialOrd>(v: &mut [T]) {
+pub fn shuffle<T: Ord>(v: &mut [T]) {
 
     let mut rng = thread_rng();
     for i in 0.. v.len() {
@@ -14,7 +14,7 @@ pub fn shuffle<T: PartialOrd>(v: &mut [T]) {
 pub mod merge {
     use std::fmt::Debug;
 
-    fn merge<T: PartialOrd + Debug + Clone>(array: &mut [T], aux: &mut [T], lo: usize, mid: usize, hi: usize) {
+    fn merge<T: Ord + Debug + Clone>(array: &mut [T], aux: &mut [T], lo: usize, mid: usize, hi: usize) {
 
         let mut i = lo;
         let mut j = mid + 1;
@@ -42,7 +42,7 @@ pub mod merge {
         //println!("merge: {}, {} = {:?}", lo, hi, &array[lo..=hi]);
     }
 
-    fn sort_recurse<T: PartialOrd + Debug + Clone>(array: &mut [T], aux: &mut [T], lo: usize, hi: usize) {
+    fn sort_recurse<T: Ord + Debug + Clone>(array: &mut [T], aux: &mut [T], lo: usize, hi: usize) {
         //println!("sort: {}, {}", lo, hi);
         if hi <= lo { return; }
 
@@ -52,7 +52,7 @@ pub mod merge {
         merge(array, aux, lo, mid, hi);
     }
 
-    pub fn sort<T: PartialOrd + Debug + Clone>(array: &mut [T]) {
+    pub fn sort<T: Ord + Debug + Clone>(array: &mut [T]) {
 
         let mut aux = Vec::new();
 
@@ -63,13 +63,12 @@ pub mod merge {
         let hi = array.len() - 1;
         sort_recurse(array, &mut aux, 0, hi);
     }
-
 }
 
 
 pub mod selection {
 
-    pub fn sort<T: PartialOrd>(v: &mut [T]) {
+    pub fn sort<T: Ord>(v: &mut [T]) {
 
         for i in 0..v.len() {
             let j = get_min(i, v);
@@ -77,7 +76,7 @@ pub mod selection {
         }
     }
 
-    fn get_min<T: PartialOrd>(i: usize, v: &[T]) -> usize {
+    fn get_min<T: Ord>(i: usize, v: &[T]) -> usize {
 
         let mut min_index = i;
         let mut current_min = &v[i];
@@ -96,7 +95,7 @@ pub mod selection {
 
 pub mod insertion {
 
-    pub fn sort<T: PartialOrd>(v: &mut [T]) {
+    pub fn sort<T: Ord>(v: &mut [T]) {
 
         for i in 0..v.len() {
             for j in (1..=i).rev() {
@@ -110,7 +109,7 @@ pub mod insertion {
 
 pub mod shell {
 
-    pub fn sort<T: PartialOrd>(array: &mut [T], gaps: &[usize]) {
+    pub fn sort<T: Ord>(array: &mut [T], gaps: &[usize]) {
         for gap in gaps {
 
             if array.len() < *gap { continue; }
