@@ -113,37 +113,24 @@ pub mod shell {
     pub fn sort<T: PartialOrd>(array: &mut [T], gaps: &[usize]) {
         for gap in gaps {
 
-            if array.len() < *gap {
-                continue;
-            }
+            if array.len() < *gap { continue; }
 
-            for i in 0..*gap {
+            for start in 0..*gap {
 
-                let mut index_pointer = i;
+                let mut i = start;
 
-                while index_pointer < array.len() {
-                    let min_index = get_min(index_pointer, *gap, &array);
-                    array.swap(index_pointer, min_index);
-                    index_pointer += *gap;
+                while i < (array.len() - *gap) {
+                    let mut j = i;
+                    loop {
+                        if array[j + *gap] > array[j] { break; }
+                        array.swap(j + *gap, j);
+                        if j < *gap { break; }
+                        j -= *gap;
+                    }
+                    i += *gap;
                 }
             }
         }
-    }
-
-    fn get_min<T: PartialOrd>(i: usize, gap: usize, array: &[T]) -> usize {
-
-        let mut min_index = i;
-        let mut current_min = &array[i];
-        let mut j = i + gap;
-
-        while j < array.len(){
-            if array[j] < *current_min {
-                current_min = &array[j];
-                min_index = j;
-            }
-            j += gap;
-        }
-        min_index
     }
 }
 
