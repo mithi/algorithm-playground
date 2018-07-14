@@ -65,6 +65,39 @@ pub mod merge {
         let hi = array.len() - 1;
         sort_recurse(array, &mut aux, 0, hi);
     }
+
+    pub fn bottomsup_sort<T: Ord + Debug + Clone>(array: &mut [T]) {
+
+        println!("{:?}", array);
+
+        let length = array.len();
+        let mut aux = Vec::new();
+
+        for i in 0..length {
+            aux.push(array[i].clone());
+        }
+
+
+        let mut size = 2;
+
+        loop {
+
+            let mut i = 0;
+
+            loop {
+
+                if i >= length { break };
+                let mut hi = i + size - 1;
+                if hi >= length { hi = length - 1 }
+                let mid = i + size / 2 - 1;
+                merge(array, &mut aux, i, mid, hi);
+                i += size;
+            }
+            //println!("{}: {:?}", size, array);
+            if size > length { break; }
+            size = 2 * size;
+        }
+    }
 }
 
 
