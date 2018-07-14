@@ -1,5 +1,7 @@
 extern crate rand;
 use rand::{thread_rng, Rng};
+
+#[cfg(test)]
 pub mod tests;
 
 pub fn shuffle<T: Ord>(v: &mut [T]) {
