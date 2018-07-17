@@ -46,7 +46,7 @@ pub fn check_sorts() {
     check_sort(&v_string, merge::sort);
     check_sort(&v_char, merge::sort);
 
-    check_sort(&v_int2, merge::bottomsup_sort);
+    check_sort(&v_int1, merge::bottomsup_sort);
     check_sort(&v_int2, merge::bottomsup_sort);
     check_sort(&v_string, merge::bottomsup_sort);
     check_sort(&v_char, merge::bottomsup_sort);
