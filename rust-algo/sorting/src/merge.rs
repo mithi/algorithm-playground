@@ -1,4 +1,5 @@
 use std::fmt::Debug;
+use std::mem;
 
 fn merge<T>(array: &mut [T], aux: &mut [T], lo: usize, mid: usize, hi: usize)
     where T: Ord + Debug + Clone {
@@ -13,16 +14,16 @@ fn merge<T>(array: &mut [T], aux: &mut [T], lo: usize, mid: usize, hi: usize)
     for x in lo..=hi {
 
         if i > mid {
-            array[x] = aux[j].clone();
+            mem::swap(&mut array[x], &mut aux[j]);
             j+=1;
         } else if j > hi {
-            array[x] = aux[i].clone();
+            mem::swap(&mut array[x], &mut aux[i]);
             i+=1;
         } else if aux[j] > aux[i] {
-            array[x] = aux[i].clone();
+            mem::swap(&mut array[x], &mut aux[i]);
             i+=1;
         } else {
-            array[x] = aux[j].clone();
+            mem::swap(&mut array[x], &mut aux[j]);
             j+=1;
         }
     }
@@ -54,7 +55,7 @@ pub fn sort<T: Ord + Debug + Clone>(array: &mut [T]) {
 
 pub fn bottomsup_sort<T: Ord + Debug + Clone>(array: &mut [T]) {
 
-    println!("{:?}", array);
+    //println!("{:?}", array);
 
     let length = array.len();
     let mut aux = Vec::new();
