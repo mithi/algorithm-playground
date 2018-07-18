@@ -1,6 +1,19 @@
 use super::*;
 use std::fmt::Debug;
 
+
+pub fn new_copy<T: Clone>(v: &[T]) -> Vec<T> {
+
+    let length = v.len();
+    let mut w = Vec::new();
+
+    for i in 0..length {
+        w.push(v[i].clone());
+    }
+    w
+}
+
+
 pub fn check_sort<T, F>(x: &[T], sort: F)
     where T: Ord + Clone + Debug,
           F: Fn(&mut [T]) {
@@ -20,32 +33,6 @@ pub fn check_shellsort<T>(x: &[T], gaps: &[usize])
     shuffle(&mut v);
     shell::sort(&mut v, gaps);
     assert_eq!(x.to_vec(), v);
-}
-
-
-pub fn new_copy<T: Clone>(v: &[T]) -> Vec<T> {
-
-    let length = v.len();
-    let mut w = Vec::new();
-
-    for i in 0..length {
-        w.push(v[i].clone());
-    }
-    w
-}
-
-
-#[test]
-pub fn check_large_data_sorts() {
-    let v = largedata::numbers(13000, 1000);
-    check_large_strings_sorts(&v);
-}
-
-
-#[test]
-pub fn check_strings_sort() {
-    let v = largedata::random_strings(13000);
-    check_large_strings_sorts(&v);
 }
 
 
@@ -69,6 +56,20 @@ pub fn check_large_strings_sorts<T: Clone + Debug + Ord>(v: &[T]) {
 
     let gaps = vec![701, 301, 132, 57, 23, 10, 4, 1];
     assert_eq!(shell::sort(&mut x7, &gaps), w);
+}
+
+
+#[test]
+pub fn check_large_data_sorts() {
+    let v = largedata::numbers(13000, 1000);
+    check_large_strings_sorts(&v);
+}
+
+
+#[test]
+pub fn check_strings_sort() {
+    let v = largedata::random_strings(13000);
+    check_large_strings_sorts(&v);
 }
 
 
