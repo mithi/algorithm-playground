@@ -2,6 +2,9 @@ extern crate rand;
 use rand::{thread_rng, Rng};
 
 pub mod merge;
+pub mod quick;
+pub mod largedata;
+
 #[cfg(test)]
 pub mod tests;
 
