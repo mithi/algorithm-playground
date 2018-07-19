@@ -1,15 +1,18 @@
 use std::fmt::Debug;
+use rand::{thread_rng, Rng};
 use super::*;
 
 
+
 pub fn sort<T: Ord + Debug + Clone>(array: &mut [T]) {
-    shuffle(array);
+    //let mut rng = thread_rng();
+    //rng.shuffle(array);
     sort_recurse(array);
 }
 
 
 pub fn improved_sort<T: Ord + Debug + Clone>(array: &mut [T]) {
-    shuffle(array);
+    //shuffle(array);
     improved_sort_recurse(array);
 }
 
