@@ -1,7 +1,7 @@
 use super::shuffle;
 use rand::{thread_rng, Rng};
 
-pub fn numbers(n: usize, m: usize) -> Vec<usize> {
+pub fn random_numbers(n: usize, m: usize) -> Vec<usize> {
     let mut rng = thread_rng();
     let mut v = Vec::new();
     for _ in 0..n {
@@ -14,7 +14,7 @@ pub fn numbers(n: usize, m: usize) -> Vec<usize> {
 
 pub fn random_strings(n: usize) -> Vec<String> {
 
-    let x = "abcdefghijklmnabcd".to_string().into_bytes();
+    let x = "abcdefghijklmnopqrstuvwxyz".to_string().into_bytes();
     let mut v = Vec::new();
 
     for _ in 0..n {
