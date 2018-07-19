@@ -1,19 +1,6 @@
 use super::*;
 use std::fmt::Debug;
 
-
-pub fn new_copy<T: Clone>(v: &[T]) -> Vec<T> {
-
-    let length = v.len();
-    let mut w = Vec::new();
-
-    for i in 0..length {
-        w.push(v[i].clone());
-    }
-    w
-}
-
-
 pub fn check_sort<T, F>(x: &[T], sort: F)
     where T: Ord + Clone + Debug,
           F: Fn(&mut [T]) {
@@ -37,15 +24,15 @@ pub fn check_shellsort<T>(x: &[T], gaps: &[usize])
 
 
 pub fn check_large_strings_sorts<T: Clone + Debug + Ord>(v: &[T]) {
-    let w = new_copy(v).sort();
+    let w = v.to_vec().sort();
 
-    let mut x1 = new_copy(v);
-    let mut x2 = new_copy(v);
-    let mut x3 = new_copy(v);
-    let mut x4 = new_copy(v);
-    let mut x5 = new_copy(v);
-    let mut x6 = new_copy(v);
-    let mut x7 = new_copy(v);
+    let mut x1 = v.to_vec();
+    let mut x2 = v.to_vec();
+    let mut x3 = v.to_vec();
+    let mut x4 = v.to_vec();
+    let mut x5 = v.to_vec();
+    let mut x6 = v.to_vec();
+    let mut x7 = v.to_vec();
 
     assert_eq!(quick::improved_sort(&mut x1), w);
     assert_eq!(quick::sort(&mut x2), w);
