@@ -5,6 +5,14 @@ authors = ["Mithi Sevilla <mithi.sevilla@gmail.com>"]
 
 [dependencies]
 rand = "0.5.2"
+lazy_static = "1.0"
 
 [profile.dev]
 opt-level = 3
+
+[dev-dependencies]
+criterion = "0.2"
+
+[[bench]]
+name = "sortbench"
+harness = false
