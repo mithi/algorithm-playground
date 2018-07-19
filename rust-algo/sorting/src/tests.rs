@@ -48,14 +48,14 @@ pub fn check_large_strings_sorts<T: Clone + Debug + Ord>(v: &[T]) {
 
 #[test]
 pub fn check_large_data_sorts() {
-    let v = largedata::numbers(13000, 1000);
+    let v = largedata::random_numbers(1000, 100);
     check_large_strings_sorts(&v);
 }
 
 
 #[test]
 pub fn check_strings_sort() {
-    let v = largedata::random_strings(13000);
+    let v = largedata::random_strings(1000);
     check_large_strings_sorts(&v);
 }
 
