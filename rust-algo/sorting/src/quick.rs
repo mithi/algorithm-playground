@@ -47,7 +47,7 @@ pub fn improved_sort_recurse<T: Ord + Debug + Clone> (array: &mut [T]) {
         return;
     }
 
-    median_trick(array);
+    //median_trick(array);
     let hi = array.len() - 1;
     let pivot = partition(array, 0, hi);
     improved_sort_recurse(&mut array[0..pivot]);
