@@ -1,0 +1,56 @@
+,continent,country,gdp_percap,life_exp
+0,Americas,Country: Argentina<br>Population: 40301927.0,12779.37964,75.32
+1,Americas,Country: Bolivia<br>Population: 9119152.0,3822.137084,65.554
+2,Americas,Country: Brazil<br>Population: 190010647.0,9065.800825,72.39
+3,Americas,Country: Canada<br>Population: 33390141.0,36319.23501,80.653
+4,Americas,Country: Chile<br>Population: 16284741.0,13171.63885,78.553
+5,Americas,Country: Colombia<br>Population: 44227550.0,7006.580419,72.889
+6,Americas,Country: Costa Rica<br>Population: 4133884.0,9645.06142,78.782
+7,Americas,Country: Cuba<br>Population: 11416987.0,8948.102923,78.273
+8,Americas,Country: Dominican Republic<br>Population: 9319622.0,6025.374752,72.235
+9,Americas,Country: Ecuador<br>Population: 13755680.0,6873.262326,74.994
+10,Americas,Country: El Salvador<br>Population: 6939688.0,5728.353514,71.878
+11,Americas,Country: Guatemala<br>Population: 12572928.0,5186.050003,70.259
+12,Americas,Country: Haiti<br>Population: 8502814.0,1201.637154,60.916
+13,Americas,Country: Honduras<br>Population: 7483763.0,3548.330846,70.198
+14,Americas,Country: Jamaica<br>Population: 2780132.0,7320.880262,72.567
+15,Americas,Country: Mexico<br>Population: 108700891.0,11977.57496,76.195
+16,Americas,Country: Nicaragua<br>Population: 5675356.0,2749.320965,72.899
+17,Americas,Country: Panama<br>Population: 3242173.0,9809.185636,75.537
+18,Americas,Country: Paraguay<br>Population: 6667147.0,4172.838464,71.752
+19,Americas,Country: Peru<br>Population: 28674757.0,7408.905561,71.421
+20,Americas,Country: Puerto Rico<br>Population: 3942491.0,19328.70901,78.746
+21,Americas,Country: Trinidad and Tobago<br>Population: 1056608.0,18008.50924,69.819
+22,Americas,Country: United States<br>Population: 301139947.0,42951.65309,78.242
+23,Americas,Country: Uruguay<br>Population: 3447496.0,10611.46299,76.384
+24,Americas,Country: Venezuela<br>Population: 26084662.0,11415.80569,73.747
+0,Europe,Country: Albania<br>Population: 3600523.0,5937.029526,76.423
+1,Europe,Country: Austria<br>Population: 8199783.0,36126.4927,79.829
+2,Europe,Country: Belgium<br>Population: 10392226.0,33692.60508,79.441
+3,Europe,Country: Bosnia and Herzegovina<br>Population: 4552198.0,7446.298803,74.852
+4,Europe,Country: Bulgaria<br>Population: 7322858.0,10680.79282,73.005
+5,Europe,Country: Croatia<br>Population: 4493312.0,14619.22272,75.748
+6,Europe,Country: Czech Republic<br>Population: 10228744.0,22833.30851,76.486
+7,Europe,Country: Denmark<br>Population: 5468120.0,35278.41874,78.332
+8,Europe,Country: Finland<br>Population: 5238460.0,33207.0844,79.313
+9,Europe,Country: France<br>Population: 61083916.0,30470.0167,80.657
+10,Europe,Country: Germany<br>Population: 82400996.0,32170.37442,79.406
+11,Europe,Country: Greece<br>Population: 10706290.0,27538.41188,79.483
+12,Europe,Country: Hungary<br>Population: 9956108.0,18008.94444,73.338
+13,Europe,Country: Iceland<br>Population: 301931.0,36180.78919,81.757
+14,Europe,Country: Ireland<br>Population: 4109086.0,40675.99635,78.885
+15,Europe,Country: Italy<br>Population: 58147733.0,28569.7197,80.546
+16,Europe,Country: Montenegro<br>Population: 684736.0,9253.896111,74.543
+17,Europe,Country: Netherlands<br>Population: 16570613.0,36797.93332,79.762
+18,Europe,Country: Norway<br>Population: 4627926.0,49357.19017,80.196
+19,Europe,Country: Poland<br>Population: 38518241.0,15389.92468,75.563
+20,Europe,Country: Portugal<br>Population: 10642836.0,20509.64777,78.098
+21,Europe,Country: Romania<br>Population: 22276056.0,10808.47561,72.476
+22,Europe,Country: Serbia<br>Population: 10150265.0,9786.534714,74.002
+23,Europe,Country: Slovak Republic<br>Population: 5447502.0,18678.31435,74.663
+24,Europe,Country: Slovenia<br>Population: 2009245.0,25768.25759,77.926
+25,Europe,Country: Spain<br>Population: 40448191.0,28821.0637,80.941
+26,Europe,Country: Sweden<br>Population: 9031088.0,33859.74835,80.884
+27,Europe,Country: Switzerland<br>Population: 7554661.0,37506.41907,81.701
+28,Europe,Country: Turkey<br>Population: 71158647.0,8458.276384,71.777
+29,Europe,Country: United Kingdom<br>Population: 60776238.0,33203.26128,79.425
