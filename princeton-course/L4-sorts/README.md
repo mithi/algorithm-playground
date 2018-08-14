@@ -1,8 +1,9 @@
 # TODO:
+- Write a program that solves the convex hull problem in rust!
 - Reimplement common sorts in rust!
 - IMPLEMENT 3-WAY QUICKSORT
 - Implement merge sorts with improvements!
-- Write a program that solves the convex hull problem in rust!
+- IMPLEMENT QUICK-SELECT
 - Add pictures in this document
 - Add more writeupt details for 3-way quicksort
 
@@ -162,15 +163,14 @@ PRACTICAL IMPROVEMENTS:
 - Quicksort has too much overhead for tiny subarrays
 -Cutoff to insertion sort for 10-15 items
 
-
 What pivot to use?
 - median of 3 random items
 ```
 
 # 3-WAY PARTITIONING QUICKSORT
+## TODO: Write more notes about this!
 - Important to sort items with many duplicate keys!
 - DUTCH NATIONAL FLAG PROBLEM [Edsger Dijkstra]
-## TODO: Write more notes about this!
 
 # Shuffling
 - Make sure the array is randomized!
