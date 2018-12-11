@@ -2,7 +2,7 @@
 
 This repository will contain my solutions to various programming exercises (in Python, C++, Rust) and some of my personal notes about algorithms in general
 
-# References
+# Some References
 
 ### Books
 - Cracking the Coding Interview, Gayle Laakmann McDowell
