@@ -5,7 +5,7 @@ This repository will contain my solutions to various programming exercises (in P
 # Some References
 
 ### Main
-- [Princeton Algorithms and Data Structures, Robert Sedgewick](https://algs4.cs.princeton.edu/home/)
+- [Princeton Algorithms and Data Structures, Robert Sedgewice and Kevin Waynz](https://algs4.cs.princeton.edu/home/)
 
 ### Repositories
 - [Interactive Coding Challenge](https://github.com/donnemartin/interactive-coding-challenges)
@@ -17,12 +17,12 @@ This repository will contain my solutions to various programming exercises (in P
 - [FireCode](https://www.firecode.io/) 
 
 ### Books
+- Grokking Algorithms, Aditya Bhargava
 - Cracking the Coding Interview, Gayle Laakmann McDowell
 - Elements of Programming Interviews, Adnan Aziz
 - Introduction to Algorithms, Thomas Cormen
 - The Algorithm Design Manual, Steven Skiena 
-- Algorithms, Robert Sedgewick
-- Grokking Algorithms, Aditya Bhargava
+- Algorithms, Robert Sedgewick and Kevin Wayne
 - Learning Algorithms Through Programming and Puzzle Solving, Alexander S. Kulikov and Pavel Pevzner
 
 # Advanced
