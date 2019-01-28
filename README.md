@@ -5,7 +5,7 @@ This repository will contain my solutions to various programming exercises (in P
 # Some References
 
 ### Main
-- [Princeton Algorithms and Data Structures, Robert Sedgewice and Kevin Waynz](https://algs4.cs.princeton.edu/home/)
+- [Princeton Algorithms and Data Structures, Robert Sedgewick and Kevin Wayne](https://algs4.cs.princeton.edu/home/)
 
 ### Repositories
 - [Interactive Coding Challenge](https://github.com/donnemartin/interactive-coding-challenges)
