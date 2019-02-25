@@ -6,10 +6,11 @@ import pytest
 #           E(3)   X(9)
 #          /   \
 #      A(1)     R(7)
-#         \     / 
-#        C(2) H(5) 
+#         \     /
+#        C(2) H(5)
 #            /   \
 #           G(4)  M(6)
+
 
 @pytest.fixture
 def sample_bst():
@@ -25,9 +26,11 @@ def sample_bst():
     bst.insert('G', 4)
     return bst
 
+
 @pytest.fixture
 def empty_bst():
     return BinarySearchTree()
+
 
 ###########################################################################################
 def test_empty(empty_bst):
@@ -38,26 +41,27 @@ def test_empty(empty_bst):
 
 ###########################################################################################
 
+
 def test_insert(sample_bst):
-    
+
     assert sample_bst.root.key=='S'
     assert sample_bst.root.left.key=='E'
     assert sample_bst.root.right.key=='X'
     assert sample_bst.root.right.left is None
     assert sample_bst.root.right.right is None
-    
+
     e_node = sample_bst.root.left
     assert e_node.left.key=='A'
     assert e_node.right.key=='R'
-    
+
     a_node = e_node.left
     assert a_node.left is None
     assert a_node.right.key=='C'
-    
+
     h_node = e_node.right.left
     assert h_node.left.key=='G'
     assert h_node.right.key =='M'
-    
+
     # R
     assert e_node.right.right is None
     # C
@@ -69,6 +73,7 @@ def test_insert(sample_bst):
     # M
     assert h_node.right.left is None
     assert h_node.right.right is None
+
 
 def test_get(sample_bst):
     assert sample_bst.get('A')==1
@@ -97,12 +102,14 @@ def test_get(sample_bst):
     assert sample_bst.get('Y')==None
     assert sample_bst.get('Z')==None
 
+
 def test_simple(sample_bst):
     assert sample_bst.minimum()=='A'
     assert sample_bst.maximum()=='X'
     assert sample_bst.is_empty()==False
     assert sample_bst.height()==4
-    
+
+
 def test_rank(sample_bst):
     assert sample_bst.rank('A')==0
     assert sample_bst.rank('B')==1
@@ -131,7 +138,8 @@ def test_rank(sample_bst):
     assert sample_bst.rank('Y')==9
     assert sample_bst.rank('Z')==9
 
-def test_select(sample_bst): 
+
+def test_select(sample_bst):
     assert sample_bst.select(0)=='A'
     assert sample_bst.select(7)=='S'
     assert sample_bst.select(2)=='E'
@@ -141,7 +149,8 @@ def test_select(sample_bst):
     assert sample_bst.select(8)=='X'
     assert sample_bst.select(5)=='M'
     assert sample_bst.select(3)=='G'
-    
+
+
 def test_floor(sample_bst):
     assert sample_bst.floor('A')=='A'
     assert sample_bst.floor('B')=='A'
@@ -169,6 +178,7 @@ def test_floor(sample_bst):
     assert sample_bst.floor('X')=='X'
     assert sample_bst.floor('Y')=='X'
     assert sample_bst.floor('Z')=='X'
+
 
 def test_ceiling(sample_bst):
     assert sample_bst.ceiling('A')=='A'
@@ -198,6 +208,7 @@ def test_ceiling(sample_bst):
     assert sample_bst.ceiling('Y')==None
     assert sample_bst.ceiling('Z')==None
 
+
 def test_does_contain(sample_bst):
     assert sample_bst.does_contain('A')==True
     assert sample_bst.does_contain('B')==False
@@ -225,14 +236,15 @@ def test_does_contain(sample_bst):
     assert sample_bst.does_contain('X')==True
     assert sample_bst.does_contain('Y')==False
     assert sample_bst.does_contain('Z')==False
-    
+
+
 def test_size(sample_bst):
     assert sample_bst.size()==9 #S
     assert sample_bst.root.right.count==1 #X
     assert sample_bst.root.left.count==7 #E
     assert sample_bst.root.left.left.count==2 #A
     assert sample_bst.root.left.left.right.count==1 #C
-    assert sample_bst.root.left.right.count==4 #R 
+    assert sample_bst.root.left.right.count==4 #R
     assert sample_bst.root.left.right.left.count==3 #H
     assert sample_bst.root.left.right.left.left.count==1 #G
     assert sample_bst.root.left.right.left.right.count==1 #M
@@ -242,48 +254,44 @@ def test_size(sample_bst):
     assert sample_bst.size_between('D', 'T') == 6
     assert sample_bst.size_between('G', 'N') == 3
 
+
 def test_delete_min_max(sample_bst):
     assert sample_bst.size() == 9
     assert sample_bst.minimum() == 'A'
     sample_bst.delete_minimum()
     assert sample_bst.size() == 8
     assert sample_bst.minimum() == 'C'
-
     assert sample_bst.size() == 8
     assert sample_bst.maximum() == 'X'
-
     sample_bst.delete_maximum()
     assert sample_bst.size() == 7
     assert sample_bst.maximum() == 'S'
-
     sample_bst.delete_maximum()
     assert sample_bst.size() == 6
     assert sample_bst.root.key == 'E'
     assert sample_bst.maximum() == 'R'
+
 
 def test_delete(sample_bst):
     assert sample_bst.size()==9
     sample_bst.delete('G')
     assert sample_bst.size()==8
     assert sample_bst.root.left.key=='E'
-
     sample_bst.delete('Z')
     assert sample_bst.size()==8
     assert sample_bst.root.left.key=='E'
-
     sample_bst.delete('E')
     assert sample_bst.size()==7
     assert sample_bst.root.left.key=='H'
-
     sample_bst.delete('B')
     assert sample_bst.size()==7
     assert sample_bst.root.left.key=='H'
-    
+
+
 def test_inorder_iteration(sample_bst):
     inorder = ['A', 'C', 'E', 'G', 'H', 'M', 'R', 'S', 'X']
-    # inorder iteration
     x = []
-    for s in sample_bst:
+    for s in sample_bst: # inorder iteratioN
         x.append(s)
     assert x==inorder
 
@@ -291,9 +299,7 @@ def test_inorder_iteration(sample_bst):
 def test_levelorder(sample_bst):
     levelorder = ['S', 'E', 'X', 'A', 'R', 'C', 'H', 'G', 'M']
     q = sample_bst.levelorder_queue()
-
     x = []
     while not q.empty():
         x.append(q.get())
-
     assert x==levelorder
