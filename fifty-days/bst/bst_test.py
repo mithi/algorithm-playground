@@ -49,19 +49,15 @@ def test_insert(sample_bst):
     assert sample_bst.root.right.key=='X'
     assert sample_bst.root.right.left is None
     assert sample_bst.root.right.right is None
-
     e_node = sample_bst.root.left
     assert e_node.left.key=='A'
     assert e_node.right.key=='R'
-
     a_node = e_node.left
     assert a_node.left is None
     assert a_node.right.key=='C'
-
     h_node = e_node.right.left
     assert h_node.left.key=='G'
     assert h_node.right.key =='M'
-
     # R
     assert e_node.right.right is None
     # C
@@ -248,28 +244,28 @@ def test_size(sample_bst):
     assert sample_bst.root.left.right.left.count==3 #H
     assert sample_bst.root.left.right.left.left.count==1 #G
     assert sample_bst.root.left.right.left.right.count==1 #M
-    assert sample_bst.size_between('C', 'T') == 7
-    assert sample_bst.size_between('C', 'S') == 7
-    assert sample_bst.size_between('D', 'S') == 6
-    assert sample_bst.size_between('D', 'T') == 6
-    assert sample_bst.size_between('G', 'N') == 3
+    assert sample_bst.size_between('C', 'T')==7
+    assert sample_bst.size_between('C', 'S')==7
+    assert sample_bst.size_between('D', 'S')==6
+    assert sample_bst.size_between('D', 'T')==6
+    assert sample_bst.size_between('G', 'N')==3
 
 
 def test_delete_min_max(sample_bst):
-    assert sample_bst.size() == 9
-    assert sample_bst.minimum() == 'A'
+    assert sample_bst.size()==9
+    assert sample_bst.minimum()=='A'
     sample_bst.delete_minimum()
-    assert sample_bst.size() == 8
-    assert sample_bst.minimum() == 'C'
-    assert sample_bst.size() == 8
-    assert sample_bst.maximum() == 'X'
+    assert sample_bst.size()==8
+    assert sample_bst.minimum()=='C'
+    assert sample_bst.size()==8
+    assert sample_bst.maximum()=='X'
     sample_bst.delete_maximum()
-    assert sample_bst.size() == 7
-    assert sample_bst.maximum() == 'S'
+    assert sample_bst.size()==7
+    assert sample_bst.maximum()=='S'
     sample_bst.delete_maximum()
-    assert sample_bst.size() == 6
-    assert sample_bst.root.key == 'E'
-    assert sample_bst.maximum() == 'R'
+    assert sample_bst.size()==6
+    assert sample_bst.root.key=='E'
+    assert sample_bst.maximum()=='R'
 
 
 def test_delete(sample_bst):
