@@ -102,3 +102,20 @@
         return current
 ```
 
+### Another example test client
+```
+ *  A 8
+ *  C 4
+ *  E 12
+ *  H 5
+ *  L 11
+ *  M 9
+ *  P 10
+ *  R 3
+ *  S 0
+ *  X 7
+```
+# Miscellaneous References
+- https://algs4.cs.princeton.edu/32bst/
+- https://algs4.cs.princeton.edu/32bst/BST.java.html
+- https://algs4.cs.princeton.edu/32bst/NonrecursiveBST.java.html
