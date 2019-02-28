@@ -128,21 +128,46 @@ class Node:
     def height(current):
         if current is None: return -1
         return 1 + max(Node.height(current.left), Node.height(current.right))
-
-
+    
+    # add the keys between min_key and max_key in the subtree 
+    # rooted at current to the queue
+    # Strategy: 
+    # Go left until the left subtree won't satisfy our condition
+    # Go right then go left again until the left subtree won't 
+    # satisfy our condition.
+    # if current key > max_key and we've exhaused its left subtree
+    # then all those on its right subtree are larger so we're done
+    @staticmethod 
+    def inorder_between(current, min_k, max_k, q):
+        if current is None: return 
+        if current.key > min_k:
+            # Repeatedly go left until the node
+            # is the minimum or less than mininum 
+            # which means it's left subtree no longer has keys we're
+            # interested in (everything there is less than our requirement)
+            Node.inorder_between(current.left, min_k, max_k, q)
+        # Enqueue key that satisfy condition 
+        if current.key >= min_k and current.key <= max_k:
+            q.put(current.key)
+        if current.key < max_k:
+            # There might be nodes on the right subtree  
+            # That satisfies our condition (check left of right subtree)
+            Node.inorder_between(current.right, min_k, max_k, q)
+            
 class BinarySearchTree:
 
     def __init__(self):
         self.root = None
-        self.q = None # storage for inorder traversal
+        self.q = None # Storage for inorder traversal
 
     def __iter__(self):
         self.q = Queue()
-        self._inorder(self.root) # populates self.q
+        self._inorder(self.root) # Populates self.q
         return self
 
     def __next__(self):
-        if self.q.empty(): raise StopIteration
+        if self.q.empty():
+            raise StopIteration
         return self.q.get()
 
     def _inorder(self, current):
@@ -166,18 +191,31 @@ class BinarySearchTree:
             nodes.put(current.left)
             nodes.put(current.right)
         return keys
-
+    
+    def keys_between(self, min_k, max_k):
+        BinarySearchTree._check(min_k)
+        BinarySearchTree._check(max_k)
+        if min_k > max_k: return None
+        
+        q = Queue()
+        if min_k == max_k and self.does_contain(min_k):
+            q.put(min_k)
+            return q
+        
+        Node.inorder_between(self.root, min_k, max_k, q)
+        return q
+    
     @staticmethod
     def _check(k):
         if k is None: raise Exception('argument must not be None')
 
     def insert(self, k, v):
         BinarySearchTree._check(k)
-        BinarySearchTree._check(k)
+        BinarySearchTree._check(v)
         self.root = Node.put(k, v, self.root)
 
     def get(self, k):
-        # get value associated with key k if it exists
+        # Get value associated with key k if it exists
         BinarySearchTree._check(k)
         current = self.root
         while current is not None:
@@ -197,7 +235,7 @@ class BinarySearchTree:
         return self.root is None
 
     def height(self):
-        #Note: height of one-node tree: 0, height of None: -1
+        # NOTE: height of one-node tree: 0, height of None: -1
         return Node.height(self.root)
 
     def rank(self, k):
