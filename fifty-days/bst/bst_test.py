@@ -1,4 +1,6 @@
 from bst import BinarySearchTree
+from bst import Node
+
 import pytest
 
 #              S(8)
@@ -26,22 +28,65 @@ def sample_bst():
     bst.insert('G', 4)
     return bst
 
+@pytest.fixture
+def sample_bst2():
+    bst = BinarySearchTree()
+    key_string = "S E A R C H E X A M P L E"
+    keys = key_string.split(" ")
+    for i, key in enumerate(keys):
+        bst.insert(key, i)
+    return bst
 
 @pytest.fixture
 def empty_bst():
     return BinarySearchTree()
 
 
-###########################################################################################
+#########################################
 def test_empty(empty_bst):
     assert empty_bst.height() == -1
-    assert empty_bst.is_empty() == True
+    assert empty_bst.is_empty() is True
     assert empty_bst.size()==0
 
 
-###########################################################################################
+##############################################
+def test_if_bst(sample_bst, sample_bst2):
+    # Test for symmetric order
+    def is_bst(current, min_k, max_k):
+        if current is None: return True
+        if min_k is not None and current.key <= min_k:
+            return False
+        if max_k is not None and current.key >= max_k:
+            return False
+        
+        return is_bst(current.left, min_k, current.key) and \
+          is_bst(current.right, current.key, max_k)
+    
+    assert is_bst(sample_bst2.root, None, None) is True
+    assert is_bst(sample_bst.root, None, None) is True
 
 
+def test_size_consistency(sample_bst, sample_bst2):
+    def is_size_consistent(current):
+        if current is None: return True
+        if current.count != 1 + Node.size(current.left) + \
+            Node.size(current.right):
+            return False
+        return is_size_consistent(current.left) and \
+            is_size_consistent(current.right)
+    
+    assert is_size_consistent(sample_bst.root) is True
+    assert is_size_consistent(sample_bst2.root) is True
+
+def test_rank_consistent(sample_bst, sample_bst2):
+    
+    for i in range(sample_bst.size()):
+        assert i == sample_bst.rank(sample_bst.select(i))
+
+    for i in range(sample_bst2.size()):
+        assert i == sample_bst2.rank(sample_bst2.select(i))
+        
+##############################################
 def test_insert(sample_bst):
 
     assert sample_bst.root.key=='S'
@@ -57,7 +102,7 @@ def test_insert(sample_bst):
     assert a_node.right.key=='C'
     h_node = e_node.right.left
     assert h_node.left.key=='G'
-    assert h_node.right.key =='M'
+    assert h_node.right.key=='M'
     # R
     assert e_node.right.right is None
     # C
@@ -287,7 +332,7 @@ def test_delete(sample_bst):
 def test_inorder_iteration(sample_bst):
     inorder = ['A', 'C', 'E', 'G', 'H', 'M', 'R', 'S', 'X']
     x = []
-    for s in sample_bst: # inorder iteratioN
+    for s in sample_bst: # inorder iteration
         x.append(s)
     assert x==inorder
 
