@@ -22,6 +22,19 @@
   - return number of keys smaller than a given key
 ```
 
+# Check integrity of BST
+```
+1. is_size_consistent(node)
+- size consistent for all nodes
+
+2. is_rank_consistent(node)
+- rank and select makes sense for all nodes
+
+3. is_bst()
+- is the tree root at x, a BST with all keys strictly between min and max. 
+- if min and max is None, treat as empty constraint 
+```
+
 # Miscellaneous Notes
 
 ### Computing the floor of key K
@@ -50,6 +63,34 @@
         # the current node should be itself, unless it's the minimum, then it should
         # be replaced by its right link.
         return current
+```
+
+### Get the keys between two keys 
+```python 
+    # add the keys between min_key and max_key in the subtree 
+    # rooted at `current` to the queue
+    # Strategy: 
+    # Go left until the left subtree won't satisfy our condition
+    # Go right then go left again until the left subtree won't 
+    # satisfy our condition.
+    # if current key > max_key and we've exhaused its left subtree
+    # then all those on its right subtree are larger so we're done
+    @staticmethod 
+    def inorder_between(current, min_k, max_k, q):
+        if current is None: return 
+        if current.key > min_k:
+            # Repeatedly go left until the node
+            # is the minimum or less than mininum 
+            # which means it's left subtree no longer has keys we're
+            # interested in (everything there is less than our requirement)
+            Node.inorder_between(current.left, min_k, max_k, q)
+        # Enqueue key that satisfy condition 
+        if current.key >= min_k and current.key <= max_k:
+            q.put(current.key)
+        if current.key < max_k:
+            # There might be nodes on the right subtree  
+            # That satisfies our condition (check left of right subtree)
+            Node.inorder_between(current.right, min_k, max_k, q)
 ```
 
 ### Hibbard deletion
@@ -115,6 +156,7 @@
  *  S 0
  *  X 7
 ```
+
 # Miscellaneous References
 - https://algs4.cs.princeton.edu/32bst/
 - https://algs4.cs.princeton.edu/32bst/BST.java.html
