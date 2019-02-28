@@ -131,27 +131,14 @@ class Node:
     
     # add the keys between min_key and max_key in the subtree 
     # rooted at current to the queue
-    # Strategy: 
-    # Go left until the left subtree won't satisfy our condition
-    # Go right then go left again until the left subtree won't 
-    # satisfy our condition.
-    # if current key > max_key and we've exhaused its left subtree
-    # then all those on its right subtree are larger so we're done
     @staticmethod 
     def inorder_between(current, min_k, max_k, q):
         if current is None: return 
         if current.key > min_k:
-            # Repeatedly go left until the node
-            # is the minimum or less than mininum 
-            # which means it's left subtree no longer has keys we're
-            # interested in (everything there is less than our requirement)
             Node.inorder_between(current.left, min_k, max_k, q)
-        # Enqueue key that satisfy condition 
         if current.key >= min_k and current.key <= max_k:
             q.put(current.key)
         if current.key < max_k:
-            # There might be nodes on the right subtree  
-            # That satisfies our condition (check left of right subtree)
             Node.inorder_between(current.right, min_k, max_k, q)
             
 class BinarySearchTree:
