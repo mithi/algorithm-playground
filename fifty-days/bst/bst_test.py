@@ -78,6 +78,7 @@ def test_size_consistency(sample_bst, sample_bst2):
     assert is_size_consistent(sample_bst.root) is True
     assert is_size_consistent(sample_bst2.root) is True
 
+    
 def test_rank_consistent(sample_bst, sample_bst2):
     
     for i in range(sample_bst.size()):
@@ -85,6 +86,7 @@ def test_rank_consistent(sample_bst, sample_bst2):
 
     for i in range(sample_bst2.size()):
         assert i == sample_bst2.rank(sample_bst2.select(i))
+
         
 ##############################################
 def test_insert(sample_bst):
