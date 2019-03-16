@@ -23,8 +23,9 @@ fn to_base64(v: &[u8]) -> String {
         s.push(ALL64[r & mask]);
     }
 
-    if m == 2 {
-        let r = (v[v.len() - 2] as usize) << 16 + (v[v.len()-1] as usize) << 8;
+    if m > 0 {
+
+        let r = (v[v.len()-2] as usize) << 16 + (v[v.len()-1] as usize) << 8;
         s.push(ALL64[r >> 18 & mask].clone());
         s.push(ALL64[r >> 12 & mask].clone());
         s.push(ALL64[r >> 6 & mask].clone());
@@ -32,7 +33,7 @@ fn to_base64(v: &[u8]) -> String {
     }
 
     if m == 1 {
-        let r = (v[v.len() - 1] as usize) << 16;
+        let r = (v[v.len()-1] as usize) << 16;
         s.push(ALL64[r >> 18 & mask].clone());
         s.push(ALL64[r >> 12 & mask].clone());
         s.push('=');
