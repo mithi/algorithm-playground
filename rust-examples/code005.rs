@@ -1,4 +1,5 @@
 // Given a vec of u8 return the corresponding base64 string
+// Requires more testing
 const ALL64: [char; 64] = [
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
         'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
@@ -7,38 +8,38 @@ const ALL64: [char; 64] = [
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'
     ];
 
+
+fn push_four(s: &mut String, r: usize){
+    let mask:usize = 63;
+    s.push(ALL64[r >> 18 & mask].clone());
+    s.push(ALL64[r >> 12 & mask].clone());
+    s.push(ALL64[r >> 6 & mask].clone());
+
+}
+
+
 fn to_base64(v: &[u8]) -> String {
     let l = v.len() / 3;
     let m = v.len() % 3;
-
-    let mask:usize = 63;
     let mut s = String::new();
 
     for i in 0..l {
-        let (a, b, c) = (v[3*i] as usize, v[3*i+1] as usize, v[3*i+2] as usize);
+        let x = 3*i;
+        let (a, b, c) = (v[x] as usize, v[x+1] as usize, v[x+2] as usize);
         let r:usize = (a << 16) + (b << 8) + c;
-        s.push(ALL64[r >> 18 & mask].clone());
-        s.push(ALL64[r >> 12 & mask].clone());
-        s.push(ALL64[r >> 6 & mask].clone());
-        s.push(ALL64[r & mask]);
+        push_four(&mut s, r);
     }
 
-    if m > 0 {
+    if m == 0 { return s; }
 
-        let r = (v[v.len()-2] as usize) << 16 + (v[v.len()-1] as usize) << 8;
-        s.push(ALL64[r >> 18 & mask].clone());
-        s.push(ALL64[r >> 12 & mask].clone());
-        s.push(ALL64[r >> 6 & mask].clone());
-        s.push('=');
+    let (one, two) = (v[v.len()-1] as usize, v[v.len()-2] as usize);
+    let mut r:usize = (one << 16) + (61 << 8);
+
+    if m == 2 {
+        r = (two << 16) + (one << 8);
     }
 
-    if m == 1 {
-        let r = (v[v.len()-1] as usize) << 16;
-        s.push(ALL64[r >> 18 & mask].clone());
-        s.push(ALL64[r >> 12 & mask].clone());
-        s.push('=');
-        s.push('=');
-    }
+    push_four(&mut s, r + 61);
     s
 }
 
