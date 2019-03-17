@@ -24,6 +24,7 @@ lazy_static! {
     };
 }
 
+
 fn push_three(v: &mut Vec<u8>, r: usize) {
     let mask = 255;
     let (a, b, c) = ((r >> 16) & mask, (r >> 8) & mask, r & mask);
@@ -32,9 +33,11 @@ fn push_three(v: &mut Vec<u8>, r: usize) {
     v.push(c as u8);
 }
 
+
 fn get64(x: &Option<char>) -> usize {
     *MAP64.get(&x.unwrap()).unwrap()
 }
+
 
 fn from_base64(s: &str) -> Vec<u8> {
     let mut v = Vec::new();
@@ -71,6 +74,7 @@ fn from_base64(s: &str) -> Vec<u8> {
             v.push((r >> 16 & mask) as u8);
             v.push((r >> 8 & mask) as u8);
         }
+            
     } else {
         assert_eq!('=', b);
         v.push((r >> 16) as u8);
