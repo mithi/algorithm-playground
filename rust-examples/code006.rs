@@ -41,7 +41,7 @@ fn get64(x: &Option<char>) -> usize {
 
 fn from_base64(s: &str) -> Vec<u8> {
     let mut v = Vec::new();
-    let l = s.len() / 4 - 1;
+    let l = (s.len() as f32 / 4.0).ceil() as usize - 1;
     let mut chars = s.chars();
     let mask = 255;
 
@@ -54,10 +54,10 @@ fn from_base64(s: &str) -> Vec<u8> {
         push_three(&mut v, r);
     }
 
-    let x = get64(&chars.next());
-    let y = get64(&chars.next());
+    let a = get64(&chars.next());
+    let b = get64(&chars.next());
 
-    let mut r = (x  << 18) + (y << 12);
+    let mut r = (a  << 18) + (b << 12);
 
     let a = (chars).next().unwrap_or('=');
     let b = (chars).next().unwrap_or('=');
@@ -95,10 +95,10 @@ fn main() {
         ];
 
     assert_eq!(v, w);
-
-    println!("{:?}", String::from_utf8(from_base64("VGVzdAo=")).unwrap()); // Test\n
-    println!("{:?}", String::from_utf8(from_base64(&t)).unwrap());
-    println!("{:?}", String::from_utf8(from_base64("YW55IGNhcm5hbCBwbGVhc3VyZS4=")).unwrap()); //any carnal pleasure.
-    println!("{:?}", String::from_utf8(from_base64("YW55IGNhcm5hbCBwbGVhc3VyZQ==")).unwrap()); //any carnal pleasure
-    println!("{:?}", String::from_utf8(from_base64("YW55IGNhcm5hbCBwbGVhcw==")).unwrap()); //any carnal pleas
+    println!("{}", String::from_utf8(from_base64("Zg==")).unwrap());
+    println!("{}", String::from_utf8(from_base64("VGVzdAo=")).unwrap()); // Test\n
+    println!("{}", String::from_utf8(from_base64(&t)).unwrap());
+    println!("{}", String::from_utf8(from_base64("YW55IGNhcm5hbCBwbGVhc3VyZS4=")).unwrap()); //any carnal pleasure.
+    println!("{}", String::from_utf8(from_base64("YW55IGNhcm5hbCBwbGVhc3VyZQ==")).unwrap()); //any carnal pleasure
+    println!("{}", String::from_utf8(from_base64("YW55IGNhcm5hbCBwbGVhcw==")).unwrap()); //any carnal pleas
 }
