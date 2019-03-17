@@ -14,7 +14,6 @@ fn push_four(s: &mut String, r: usize){
     s.push(ALL64[r >> 18 & mask].clone());
     s.push(ALL64[r >> 12 & mask].clone());
     s.push(ALL64[r >> 6 & mask].clone());
-
 }
 
 
@@ -31,19 +30,33 @@ fn to_base64(v: &[u8]) -> String {
     }
 
     if m == 0 { return s; }
-
-    let (one, two) = (v[v.len()-1] as usize, v[v.len()-2] as usize);
-    let mut r:usize = (one << 16) + (61 << 8);
-
+    
+    let mask = 63;
+    let r;
+    
     if m == 2 {
-        r = (two << 16) + (one << 8);
+        let (a, b) = (v[v.len()-2] as usize, v[v.len()-1] as usize);
+        r = (a << 16) + (b << 8);
+        s.push(ALL64[r >> 18 & mask].clone());
+        s.push(ALL64[r >> 12 & mask].clone());
+        s.push(ALL64[r >> 6 & mask].clone());
+        
+    } else {
+        r = (v[v.len()-1] as usize) << 16;
+        s.push(ALL64[r >> 18 & mask].clone());
+        s.push(ALL64[r >> 12 & mask].clone());
+        s.push('=');
     }
-
-    push_four(&mut s, r + 61);
+    
+    s.push('=');
     s
 }
 
+
 fn main(){
+
+    let a: Vec<u8> = vec![84, 101, 115, 116, 10]; 
+    let b: Vec<u8> = vec![97, 110, 121, 32, 99, 97, 114, 110, 97, 108, 32, 112, 108, 101, 97, 115, 117, 114, 101];
 
     let v: Vec<u8> = vec![
         73, 39, 109, 32, 107, 105, 108, 108, 105, 110, 103, 32, 121, 111, 117, 114,
@@ -51,7 +64,13 @@ fn main(){
         115, 111, 110, 111, 117, 115, 32, 109, 117, 115, 104, 114, 111, 111, 109
         ];
 
-    let s = to_base64(&v);
-    println!("{:?}", &s);
-    // "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
+    let w: Vec<u8> = vec![77, 97]; 
+    let x: Vec<u8> = vec![77]; 
+
+    println!("{}", to_base64(&a)); // VGVzdAo=
+    println!("{}", to_base64(&b)); //YW55IGNhcm5hbCBwbGVhc3VyZQ==
+
+    println!("{}", to_base64(&v)); // "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
+    println!("{}", to_base64(&w)); // TWE=
+    println!("{}", to_base64(&x)); // TQ==
 }
