@@ -1,7 +1,3 @@
-# Algorithm Playground
-
-This repository will contain my solutions to various programming exercises (in Python, C++, Rust) and some of my personal notes about algorithms in general. It is unorganized and unstructured (quite a mess). In the future, when I have the time, I'll make a separate repository for more readable well-structured and organized notes and code before I archive this repository.
-
 # Some References
 
 ### Main
