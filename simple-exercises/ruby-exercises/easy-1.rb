@@ -1,3 +1,42 @@
+# Write a method that returns the `n`th prime number. Recall that only
+# numbers greater than 1 can be prime.
+
+def is_prime?(n)
+  if n == 2
+    return true
+  end
+
+  (2...n).each do |i|
+    if n % i == 0
+      return false
+    end
+  end
+  true
+end
+
+
+def nth_prime(n)
+  if n < 2
+    return false
+  end
+
+  x = 2 # store prime here
+  i = 0 # ith prime counter
+
+  while true
+    if is_prime?(x)
+      # increment i, this is ith prime
+      i+=1
+      if i == n
+        return x
+      end
+    end
+    # evaluate next number
+    x+=1
+  end
+end
+
+
 # Write a method that takes a string in and returns true if the letter
 # "z" appears within three letters **after** an "a". You may assume
 # that the string contains only lowercase letters.
@@ -119,3 +158,18 @@ def dasherize_number(num)
 
   dashed
 end
+
+# Write a method that takes in a string and an array of indices in the
+# string. Produce a new string, which contains letters from the input
+# string in the order specified by the indices of the array of indices.
+
+def scramble_string(string, positions)
+  letters = ""
+
+  positions.each do |i|
+    letters += string[i]
+  end
+
+  letters
+end
+
