@@ -1,6 +1,3 @@
-
-
-
 def palindrome?(string)
 
   n = string.length / 2
