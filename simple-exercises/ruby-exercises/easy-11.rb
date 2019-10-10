@@ -12,9 +12,9 @@
 
 def count_until_change(s, i)
   nil if i >= s.length or i < 0
-
   ch = s[i]
   substring = s[i..-1]
+  
   substring.each_char.inject(0) do |count, current|
     return count if current != ch
     count + 1
@@ -24,6 +24,7 @@ end
 def build_say(string)
   result = ""
   i = 0
+  
   loop do
     count = count_until_change(string, i)
     result += "#{count}#{string[i]}"
@@ -33,12 +34,11 @@ def build_say(string)
 end
 
 def count_and_say(n)
-  result = "1"
+  "1" if n == 1
 
-  (n - 1).times do
-    result = build_say(result)
+  (n - 1).times.inject("1") do |result, _|
+    build_say(result)
   end
-  result
 end
 
 puts "#{count_until_change("1", 0)} == 1"
