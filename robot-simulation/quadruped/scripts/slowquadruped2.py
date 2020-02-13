@@ -15,8 +15,8 @@ KNEE_SIDESTEP = -30
 ANKLE_SIDESTEP = 30
 
 HIP_REACH = 10
-KNEE_REACH = -15
-ANKLE_REACH = 20
+KNEE_REACH = -25
+ANKLE_REACH = 30
 
 HIP_REST = -10
 KNEE_REST = -30
@@ -77,9 +77,9 @@ class Joint:
 
   def pose(self, angle):
     pwm_value = map(angle, self.angle_min, self.angle_max, self.pwm_min, self.pwm_max)
-    print 'POSE ch: ', self.channel, 'angle: ', angle, 'pwm:', int(pwm_value)
+    #print 'POSE ch: ', self.channel, 'angle: ', angle, 'pwm:', int(pwm_value)
     if TEST == False:
-      driver.setPWM(self.ch, 0, int(pwm_value))
+      driver.setPWM(self.channel, 0, int(pwm_value))
     self.current_angle = angle
 
   def get_movement_increment(self, target_angle, increments):
@@ -90,13 +90,12 @@ class Joint:
 
   def off(self):
     if TEST == False:
-      driver.setPWM(self.ch, 0, 0)
+      driver.setPWM(self.channel, 0, 0)
 
 #----------------------------
 # QUADRUPED CORE STANCES
 #----------------------------
 class QuadrupedCore:
-
 
   def __init__(self, legs):
     self.legs = legs
@@ -112,26 +111,21 @@ class QuadrupedCore:
       for joint in joints.values():
         joint.pose(0)
 
-  def pose(self, position, hip_angle, knee_angle, ankle_angle, delay):
-    self.legs[position]['hip'].pose(hip_angle)
-    self.legs[position]['knee'].pose(knee_angle)
-    self.legs[position]['ankle'].pose(ankle_angle)
-    sleep(delay)
-
-  def slow_pose(self, position, hip_angle, knee_angle, ankle_angle, delay):
-
+  def slow_leg_pose(self, position, hip_angle, knee_angle, ankle_angle, delay):
+    # slowly and simultaneously move all joints of the leg in 'position'
+    # to the final pose defined by the given respective angles
+    
     hip = self.legs[position]['hip']
     knee = self.legs[position]['knee']
     ankle = self.legs[position]['ankle']
 
+    # compute by how much to move each joint per increment 
     dh = hip.get_movement_increment(hip_angle, INCREMENTS)
     dk = knee.get_movement_increment(knee_angle, INCREMENTS)
     da = ankle.get_movement_increment(ankle_angle, INCREMENTS)
-
     dt = delay / INCREMENTS
 
     for i in xrange(INCREMENTS):
-      print 'slow pose: # ', i
       hip.move_by(dh)
       knee.move_by(dk)
       ankle.move_by(da)
@@ -147,13 +141,11 @@ class QuadrupedCore:
     dt = delay / INCREMENTS
 
     for i in xrange(INCREMENTS):
-      print 'bend up: # ', i
       knee.move_by(dk)
       ankle.move_by(da)
       sleep(dt)
 
-  def move_joints_simultaneously(self, hip_angle, knee_angle, ankle_angle, delay):
-    dt = delay / INCREMENTS
+  def move_all_joints_simultaneously(self, hip_angle, knee_angle, ankle_angle, delay):
     d_angles = {}
 
     for position, joints in self.legs.items():
@@ -167,8 +159,53 @@ class QuadrupedCore:
         'ankle': da
       }
 
+    # Slowly move each 18 angles at simultaneously 
+    dt = delay / INCREMENTS
+    self.move_in_increments(d_angles, dt)
+
+  def rest(self, position, delay=0):
+    self.slow_leg_pose(position, HIP_REST, KNEE_REST, ANKLE_REST, delay)
+
+  def side_step(self, position, delay=0):
+    self.slow_leg_pose(position, HIP_SIDESTEP, KNEE_SIDESTEP, ANKLE_SIDESTEP, delay)
+
+  def reach(self, position, delay=0):
+    self.slow_leg_pose(position, HIP_REACH, KNEE_REACH, ANKLE_REACH, delay)
+
+  def all_high_pose(self, delay):
+    self.move_all_joints_simultaneously(0, -90, 90, delay)
+
+  def all_rest_pose(self, delay):
+    self.move_all_joints_simultaneously(HIP_REST, KNEE_REST, ANKLE_REST, delay)
+
+  def propel_slowly(self, final_angles, delay):
+    # find by how much to increment each joint
+    # given the current angle, final angle and number of increments
+    d_angles = {}
+    for position, joints in self.legs.items():
+
+      hip_angle = final_angles[position]['hip']
+      knee_angle = final_angles[position]['knee']
+      ankle_angle = final_angles[position]['ankle']
+
+      dh = joints['hip'].get_movement_increment(hip_angle, INCREMENTS)
+      dk = joints['knee'].get_movement_increment(knee_angle, INCREMENTS)
+      da = joints['ankle'].get_movement_increment(ankle_angle, INCREMENTS)
+
+      d_angles[position] = {
+        'hip': dh,
+        'knee': dk,
+        'ankle': da
+      }
+
+    # Slowly move each 18 angles at simultaneously 
+    dt = delay / INCREMENTS
+    self.move_in_increments(d_angles, dt)
+
+  def move_in_increments(self, d_angles, dt):
+    # each of the 18 angles should incrementally
+    # move a little, at each increment count
     for i in xrange(INCREMENTS):
-      print 'move joints simultaneously: # ', i
       for position, joints in self.legs.items():
 
         dh = d_angles[position]['hip']
@@ -181,20 +218,24 @@ class QuadrupedCore:
 
         sleep(dt)
 
-  def rest(self, position, delay=0):
-    self.slow_pose(position, HIP_REST, KNEE_REST, ANKLE_REST, delay)
+  def propel_back_left_reaching(self, delay=0):
+    final_angles = {
+      'front left': {'hip': HIP_SIDESTEP, 'knee': KNEE_SIDESTEP, 'ankle': ANKLE_SIDESTEP},
+      'front right': {'hip': HIP_REST, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
+      'back left': {'hip': HIP_REACH, 'knee': KNEE_REACH, 'ankle': ANKLE_REACH},
+      'back right': {'hip': HIP_REST, 'knee': KNEE_REST, 'ankle': ANKLE_REST}
+    }
+    self.propel_slowly(final_angles, delay)
 
-  def side_step(self, position, delay=0):
-    self.slow_pose(position, HIP_SIDESTEP, KNEE_SIDESTEP, ANKLE_SIDESTEP, delay)
+  def propel_back_right_reaching(self, delay=0):
+    final_angles = {
+      'front left': {'hip': HIP_REST, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
+      'front right': {'hip': HIP_SIDESTEP, 'knee': KNEE_SIDESTEP, 'ankle': ANKLE_SIDESTEP},
+      'back left': {'hip': HIP_REST, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
+      'back right': {'hip': HIP_REACH, 'knee': KNEE_REACH, 'ankle': ANKLE_REACH}
 
-  def reach(self, position, delay=0):
-    self.slow_pose(position, HIP_REACH, KNEE_REACH, ANKLE_REACH, delay)
-
-  def high_pose_simultaneously(self, delay):
-    self.move_joints_simultaneously(0, -90, 90, delay)
-
-  def rest_pose_simultaneously(self, delay):
-    self.move_joints_simultaneously(HIP_REST, KNEE_REST, ANKLE_REST, delay)
+    }
+    self.propel_slowly(final_angles, delay)
 
 #----------------------------
 # QUADRUPED JOINT SETUP
@@ -202,18 +243,18 @@ class QuadrupedCore:
 ANGLE_MIN = -70
 ANGLE_MAX = 70
 
-hip_front_left = Joint(channel=0, pwm_min=165, pwm_max=500, angle_min=ANGLE_MIN, angle_max=ANGLE_MAX)
-hip_front_right = Joint(3, 510, 160, ANGLE_MIN, ANGLE_MAX)
-hip_back_left = Joint(6, 500, 155, ANGLE_MIN, ANGLE_MAX)
-hip_back_right = Joint(9, 170, 510, ANGLE_MIN, ANGLE_MAX)
-knee_front_left = Joint(1, 165, 505, ANGLE_MIN, ANGLE_MAX)
-knee_front_right = Joint(4, 465, 130, ANGLE_MIN, ANGLE_MAX)
-knee_back_left = Joint(7, 475, 120, ANGLE_MIN, ANGLE_MAX)
-knee_back_right = Joint(10, 140, 485, ANGLE_MIN, ANGLE_MAX)
-ankle_front_left = Joint(2, 400, 190, ANGLE_MIN, ANGLE_MAX)
-ankle_front_right = Joint(5, 220, 450, ANGLE_MIN, ANGLE_MAX)
-ankle_back_left = Joint(8, 250, 470, ANGLE_MIN, ANGLE_MAX)
-ankle_back_right = Joint(11, 380, 170, ANGLE_MIN, ANGLE_MAX)
+hip_front_left = Joint(channel=0, pwm_min=140, pwm_max=460, angle_min=ANGLE_MIN, angle_max=ANGLE_MAX)
+hip_front_right = Joint(3, 490, 160, ANGLE_MIN, ANGLE_MAX)
+hip_back_left = Joint(6, 485, 160, ANGLE_MIN, ANGLE_MAX)
+hip_back_right = Joint(9, 190, 510, ANGLE_MIN, ANGLE_MAX)
+knee_front_left = Joint(1, 150, 480, ANGLE_MIN, ANGLE_MAX)
+knee_front_right = Joint(4, 440, 120, ANGLE_MIN, ANGLE_MAX)
+knee_back_left = Joint(7, 460, 140, ANGLE_MIN, ANGLE_MAX)
+knee_back_right = Joint(10, 170, 480, ANGLE_MIN, ANGLE_MAX)
+ankle_front_left = Joint(2, 485, 170, ANGLE_MIN, ANGLE_MAX)
+ankle_front_right = Joint(5, 150, 480, ANGLE_MIN, ANGLE_MAX)
+ankle_back_left = Joint(8, 170, 480, ANGLE_MIN, ANGLE_MAX)
+ankle_back_right = Joint(11, 470, 160, ANGLE_MIN, ANGLE_MAX)
 
 #----------------------------
 # JOINT GROUPING
@@ -258,7 +299,7 @@ robot = QuadrupedCore(LEGS)
 # WALK TEST
 #----------------------------
 robot.zero_pose(DELAY)
-robot.rest_pose_simultaneously(DELAY)
+robot.all_rest_pose(DELAY)
 
 # STEP ZERO
 # Go to starting position
@@ -281,10 +322,7 @@ for _ in xrange(WALK_STEPS):
 
   print 'STEP THREE'
   # propel the body forward by moving all four legs backward
-  robot.side_step(FRONT_LEFT)
-  robot.rest(FRONT_RIGHT)
-  robot.reach(BACK_LEFT)
-  robot.rest(BACK_RIGHT)
+  robot.propel_back_left_reaching(DELAY)
   sleep(DELAY)
 
   print 'STEP FOUR'
@@ -299,13 +337,8 @@ for _ in xrange(WALK_STEPS):
 
   print 'STEP SIX'
   # propel the body forward by moving all four legs backward
-  robot.rest(FRONT_LEFT)
-  robot.side_step(FRONT_RIGHT)
-  robot.rest(BACK_LEFT)
-  robot.reach(BACK_RIGHT)
-  sleep(DELAY)
+  robot.propel_back_right_reaching(DELAY)
 
-robot.rest_pose_simultaneously(DELAY)
-robot.high_pose_simultaneously(DELAY)
+robot.all_rest_pose(DELAY)
+robot.all_high_pose(DELAY)
 robot.off()
-
