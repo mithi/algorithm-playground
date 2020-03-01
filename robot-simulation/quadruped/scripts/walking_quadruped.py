@@ -303,7 +303,6 @@ def walk(robot, steps):
   # Go to starting position
   # from neutral (all 0 degrees)
   # side step backward of front right leg
-
   robot.side_step(FRONT_RIGHT, DELAY)
 
   for _ in xrange(steps):
@@ -369,16 +368,7 @@ def walk_backward(steps = WALK_STEPS):
   walk(robot, steps)
 
 
-def rotate_cw(steps = WALK_STEPS):
-
-  TWIST_HIP = 30
-  twist_angles = {
-    'front left': {'hip': -TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
-    'front right': {'hip': TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
-    'back left': {'hip': TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
-    'back right': {'hip': -TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST}
-  }
-
+def rotate(twist_angles, steps):
   LEGS = {
     'front left': LEG_1,
     'front right': LEG_2,
@@ -397,7 +387,6 @@ def rotate_cw(steps = WALK_STEPS):
 
     for leg_position in [FRONT_LEFT, BACK_LEFT, BACK_RIGHT, FRONT_RIGHT]:
       print "Replant one foot."
-      robot.bend_up(leg_position, DELAY)
       robot.rest(leg_position, DELAY)
 
   robot.zero_pose(DELAY)
@@ -405,9 +394,34 @@ def rotate_cw(steps = WALK_STEPS):
   robot.high_pose_simultaneously(DELAY)
   robot.off()
 
+
+def rotate_cw(steps = WALK_STEPS):
+  TWIST_HIP = 30
+  twist_angles = {
+    'front left': {'hip': -TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
+    'front right': {'hip': TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
+    'back left': {'hip': TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
+    'back right': {'hip': -TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST}
+  }
+  print 'Rotate clockwise'
+  rotate(twist_angles, steps)
+
+
+def rotate_ccw(steps = WALK_STEPS):
+  TWIST_HIP = 30
+  twist_angles = {
+    'front left': {'hip': TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
+    'front right': {'hip': -TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
+    'back left': {'hip': -TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
+    'back right': {'hip': TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST}
+  }
+  print 'Rotate counterclockwise'
+  rotate(twist_angles, steps)
+
 # -----------------------
 # IMPORTANT: LOOK HERE!
 # -----------------------
 walk_forward(steps=WALK_STEPS)
 walk_backward(steps=WALK_STEPS)
-#rotate_cw(steps=WALK_STEPS)
+rotate_cw(steps=WALK_STEPS)
+rotate_ccw(steps=WALK_STEPS)
