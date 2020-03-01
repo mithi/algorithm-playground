@@ -291,7 +291,9 @@ LEG_4 = {
   'ankle': ankle_back_right
 }
 
-
+#----------------------------
+# WALK ALGORITHMS STARTS HERE
+#----------------------------
 def walk(robot, steps):
 
   robot.zero_pose(DELAY)
