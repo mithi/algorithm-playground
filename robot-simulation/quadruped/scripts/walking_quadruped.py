@@ -357,19 +357,6 @@ def walk_forward(steps = WALK_STEPS):
   walk(robot, steps)
 
 
-def walk_left(steps = WALK_STEPS):
-  LEGS = {
-    'front left': LEG_3,
-    'front right': LEG_1,
-    'back left': LEG_4,
-    'back right': LEG_2
-  }
-
-  print('Walk left.......')
-  robot = QuadrupedCore(LEGS)
-  walk(robot, steps)
-
-
 def walk_backward(steps = WALK_STEPS):
   LEGS = {
     'front left': LEG_4,
@@ -382,24 +369,8 @@ def walk_backward(steps = WALK_STEPS):
   robot = QuadrupedCore(LEGS)
   walk(robot, steps)
 
-
-def walk_right(steps = WALK_STEPS):
-  LEGS = {
-    'front left': LEG_2,
-    'front right': LEG_4,
-    'back left': LEG_1,
-    'back right': LEG_3
-  }
-
-  print('Walk right.......')
-  robot = QuadrupedCore(LEGS)
-  walk(robot, steps)
-
-
 # -----------------------
 # IMPORTANT: LOOK HERE!
 # -----------------------
 walk_forward(steps=WALK_STEPS)
 walk_backward(steps=WALK_STEPS)
-walk_right(steps=WALK_STEPS)
-walk_left(steps=WALK_STEPS)
