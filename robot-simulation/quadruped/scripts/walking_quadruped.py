@@ -304,7 +304,6 @@ def walk(robot, steps):
   # from neutral (all 0 degrees)
   # side step backward of front right leg
 
-  robot.bend_up(FRONT_RIGHT, DELAY)
   robot.side_step(FRONT_RIGHT, DELAY)
 
   for _ in xrange(steps):
@@ -411,4 +410,4 @@ def rotate_cw(steps = WALK_STEPS):
 # -----------------------
 walk_forward(steps=WALK_STEPS)
 walk_backward(steps=WALK_STEPS)
-rotate_cw(steps=WALK_STEPS)
+#rotate_cw(steps=WALK_STEPS)
