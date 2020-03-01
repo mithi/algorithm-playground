@@ -316,34 +316,34 @@ def walk(robot, steps):
 
   for _ in xrange(steps):
 
-    print 'STEP ONE'
     # from starting position
     # side step forward of back right leg
+    print('step 1')
     robot.bend_up(BACK_RIGHT, DELAY)
     robot.side_step(BACK_RIGHT, DELAY)
 
-    print 'STEP TWO'
     # reach forward of front right leg
+    print('step 2')
     robot.bend_up(FRONT_RIGHT, DELAY)
     robot.reach(FRONT_RIGHT, DELAY)
 
-    print 'STEP THREE'
     # propel the body forward by moving all four legs backward
+    print('step 3')
     robot.propel_slowly_back_left_reaching(DELAY)
     sleep(DELAY)
 
-    print 'STEP FOUR'
     # side step forward of left back leg
+    print('step 4')
     robot.bend_up(BACK_LEFT, DELAY)
     robot.side_step(BACK_LEFT, DELAY)
 
-    print 'STEP FIVE'
     # reach forward of left front leg
+    print('step 5')
     robot.bend_up(FRONT_LEFT, DELAY)
     robot.reach(FRONT_LEFT, DELAY)
 
-    print 'STEP SIX'
     # propel the body forward by moving all four legs backward
+    print('step 6')
     robot.propel_slowly_back_right_reaching(DELAY)
 
   robot.rest_pose_simultaneously(DELAY)
@@ -391,11 +391,11 @@ def rotate(twist_angles, steps):
   robot.rest_pose_simultaneously(DELAY)
 
   for _ in xrange(steps):
-    print "Twist."
+    print("Twist.")
     robot.propel_slowly(twist_angles, DELAY)
 
     for leg_position in [FRONT_LEFT, BACK_LEFT, BACK_RIGHT, FRONT_RIGHT]:
-      print "Replant one foot."
+      print("Replant one foot.")
       robot.rest(leg_position, DELAY)
 
   robot.zero_pose(DELAY)
@@ -412,7 +412,7 @@ def rotate_cw(steps = WALK_STEPS):
     'back left': {'hip': TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
     'back right': {'hip': -TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST}
   }
-  print 'Rotate clockwise'
+  print('Rotate clockwise')
   rotate(twist_angles, steps)
 
 
@@ -424,7 +424,7 @@ def rotate_ccw(steps = WALK_STEPS):
     'back left': {'hip': -TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
     'back right': {'hip': TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST}
   }
-  print 'Rotate counterclockwise'
+  print('Rotate counterclockwise')
   rotate(twist_angles, steps)
 
 # -----------------------
