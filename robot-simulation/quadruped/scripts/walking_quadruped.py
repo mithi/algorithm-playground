@@ -98,17 +98,26 @@ class Joint:
 class QuadrupedCore:
   def __init__(self, legs):
     self.legs = legs
-    self.zero_pose()
+    self.fast_zero_pose()
 
   def off(self):
     for joints in self.legs.values():
       for joint in joints.values():
         joint.off()
 
-  def zero_pose(self, delay=0):
+  def fast_zero_pose(self, delay=0):
     for joints in self.legs.values():
       for joint in joints.values():
         joint.pose(0)
+
+  def zero_pose(self, delay=DELAY):
+    final_angles = {
+      'front left': {'hip': 0, 'knee': 0, 'ankle': 0},
+      'front right': {'hip': 0, 'knee': 0, 'ankle': 0},
+      'back left': {'hip': 0, 'knee': 0, 'ankle': 0},
+      'back right': {'hip': 0, 'knee': 0, 'ankle': 0}
+    }
+    self.propel_slowly(final_angles, delay)
 
   def pose(self, position, hip_angle, knee_angle, ankle_angle, delay):
     self.legs[position]['hip'].pose(hip_angle)
