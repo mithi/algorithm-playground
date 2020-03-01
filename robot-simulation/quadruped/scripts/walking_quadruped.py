@@ -399,7 +399,7 @@ def rotate_cw(steps = WALK_STEPS):
     for leg_position in [FRONT_LEFT, BACK_LEFT, BACK_RIGHT, FRONT_RIGHT]:
       print "Replant one foot."
       robot.bend_up(leg_position, DELAY)
-      robot.slow_pose(leg_position, HIP_REST, KNEE_REST, ANKLE_REST, DELAY)
+      robot.rest(leg_position, DELAY)
 
   robot.zero_pose(DELAY)
   robot.rest_pose_simultaneously(DELAY)
