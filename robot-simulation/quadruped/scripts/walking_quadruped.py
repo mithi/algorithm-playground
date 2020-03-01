@@ -369,8 +369,46 @@ def walk_backward(steps = WALK_STEPS):
   robot = QuadrupedCore(LEGS)
   walk(robot, steps)
 
+
+def rotate_cw(steps = WALK_STEPS):
+
+  TWIST_HIP = 30
+  twist_angles = {
+    'front left': {'hip': -TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
+    'front right': {'hip': TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
+    'back left': {'hip': TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST},
+    'back right': {'hip': -TWIST_HIP, 'knee': KNEE_REST, 'ankle': ANKLE_REST}
+  }
+
+  LEGS = {
+    'front left': LEG_1,
+    'front right': LEG_2,
+    'back left': LEG_3,
+    'back right': LEG_4
+  }
+
+  robot = QuadrupedCore(LEGS)
+
+  robot.zero_pose(DELAY)
+  robot.rest_pose_simultaneously(DELAY)
+
+  for _ in xrange(steps):
+    print "Twist."
+    robot.propel_slowly(twist_angles, DELAY)
+
+    for leg_position in [FRONT_LEFT, BACK_LEFT, BACK_RIGHT, FRONT_RIGHT]:
+      print "Replant one foot."
+      robot.bend_up(leg_position, DELAY)
+      robot.slow_pose(leg_position, HIP_REST, KNEE_REST, ANKLE_REST, DELAY)
+
+  robot.zero_pose(DELAY)
+  robot.rest_pose_simultaneously(DELAY)
+  robot.high_pose_simultaneously(DELAY)
+  robot.off()
+
 # -----------------------
 # IMPORTANT: LOOK HERE!
 # -----------------------
 walk_forward(steps=WALK_STEPS)
 walk_backward(steps=WALK_STEPS)
+rotate_cw(steps=WALK_STEPS)
