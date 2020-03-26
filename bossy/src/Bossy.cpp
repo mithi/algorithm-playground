@@ -19,7 +19,7 @@ Bossy::Bossy(void) {
   digitalWrite(PIN_ENABLE_LEFT_MUX, HIGH);
   digitalWrite(PIN_ENABLE_RIGHT_MUX, HIGH);
 
-  // set all readings to a random number, nonsense number
+  // set all readings to a nonsense number
   for (uint8_t input_id = 0; input_id < NUMBER_OF_CHANNELS; input_id++) {
     _update(input_id);
   }
@@ -75,7 +75,6 @@ bool Bossy::hasChangedReading(const uint8_t input_id) {
 }
 
 void Bossy::_update(const uint8_t input_id) {
-  
   //temporarily makeshift function for joystick buttons without pullup resistors
   if (_isBrokenButton(input_id)) {
     _updateBrokenButton(input_id);
@@ -106,7 +105,6 @@ void Bossy::_updateState(const uint8_t input_id) {
 }
 
 void Bossy::_updateReading(const uint8_t input_id) {
-
   // check and enable multiplexer we are suppose to read from
   const bool is_left_mux = input_id >= MUX_LEFT_MIN && input_id <= MUX_LEFT_MAX;
   is_left_mux ? _enableLeftMux() : _enableRightMux();
@@ -116,6 +114,7 @@ void Bossy::_updateReading(const uint8_t input_id) {
     _saveDebouncedReading(input_id);
     return;
   }
+  
   const uint8_t channel = INPUT_CHANNEL[input_id];
   _readings[input_id] = _readMux(channel);
 }
@@ -132,7 +131,6 @@ void Bossy::_enableRightMux(void) {
 
 uint16_t Bossy::_readMux(const uint8_t channel) {
   const uint8_t controlPin[] = {s0, s1, s2, s3};
-
   const uint8_t muxChannel[16][4]= {
     {0, 0, 0, 0}, //channel 0
     {1, 0, 0, 0}, //channel 1
@@ -168,11 +166,11 @@ bool Bossy::_isButton(const uint8_t input_id) {
 }
 
 void Bossy::_saveDebouncedReading(const uint8_t input_id) {
+  const uint16_t saved_reading =  _readings[input_id];
   const uint8_t channel = INPUT_CHANNEL[input_id];
   const uint16_t reading = _readMux(channel);
-  // if current reading is not the same as the saved reading
-  // the state might have changed, double check if this is the case
-  if (reading != _readings[input_id]) {
+
+  if (saved_reading != reading) {
     _delay_ms(5);
     const uint16_t second_reading = _readMux(channel);
     if (second_reading == reading) {
@@ -194,18 +192,15 @@ bool Bossy::_isBrokenButton(const uint8_t input_id) {
 }
 
 void Bossy::_updateBrokenButton(const uint8_t input_id) {
-
+  const uint16_t saved_reading = _readings[input_id];
+  
   const bool is_left_mux = input_id >= MUX_LEFT_MIN && input_id <= MUX_LEFT_MAX;
   is_left_mux ? _enableLeftMux() : _enableRightMux();
-  
   const uint8_t channel = INPUT_CHANNEL[input_id];
   uint16_t reading = _readMux(channel);
   reading = reading == 0 ? 0 : 1023;
-  
-  // if current reading is not the same as the saved reading
-  // the state might have changd, double check if this is the case
-  if (reading != _readings[input_id]) {
 
+  if (saved_reading != reading) {
     _delay_ms(50);
     uint16_t second_reading = _readMux(channel);
     second_reading = second_reading == 0 ? 0 : 1023;
