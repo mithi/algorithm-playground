@@ -21,7 +21,7 @@
 *************************/
 #define NUMBER_OF_CHANNELS 25
 
-// which channel in the multiplexer
+// map of input id to channel in the multiplexer
 const uint8_t INPUT_CHANNEL[NUMBER_OF_CHANNELS] = {
 
   11, // LEFT_SWITCH_UPPER
@@ -61,11 +61,9 @@ const uint8_t INPUT_CHANNEL[NUMBER_OF_CHANNELS] = {
 };
 
 /**********************
- TYPE
+ INPUT TYPE (normal or inverted)
 *************************/
-// is it inverted or normal
-
-// The input type is normal
+// The input type is normal when:
 // button: pressed is HIGH
 // joystick y axis: UP is HIGH
 // joystick x axis: RIGHT is HIGH
@@ -74,6 +72,7 @@ const uint8_t INPUT_CHANNEL[NUMBER_OF_CHANNELS] = {
 #define NORMAL true
 #define INVERTED false
 
+// map of input id to its input type (
 const bool INPUT_TYPE[NUMBER_OF_CHANNELS] = {
   NORMAL, // LEFT_SWITCH_UPPER
   NORMAL, // LEFT_SWITCH_LOWER
@@ -155,6 +154,10 @@ const bool INPUT_TYPE[NUMBER_OF_CHANNELS] = {
 #define POT_RIGHT_CENTER 23
 #define POT_RIGHT 24
 
+/**********************
+ MAP input id to multiplexer id (left or right)
+*************************/
+
 // the ids for the left multiplexer is 0 to 12
 // the ids for the right multiplexer is 13 to 24
 #define MUX_LEFT_MIN 0
@@ -162,6 +165,10 @@ const bool INPUT_TYPE[NUMBER_OF_CHANNELS] = {
 
 #define MULTIPLEXER_RIGHT_MIN 13
 #define MULTIPLEXER_RIGHT_MAX 24
+
+/**********************
+  AGGREGATED BUTTONS
+*************************/
 
 #define NUMBER_OF_BOOLEAN_INPUTS 8
 
@@ -177,6 +184,8 @@ const uint8_t BOOLEAN_INPUTS[NUMBER_OF_BOOLEAN_INPUTS] = {
   RIGHT_JOYSTICK_UPPER_BUTTON
 };
 
+// which buttons are not pulled up to 5v
+// temporary software hack
 const uint8_t BROKEN_BUTTONS[NUMBER_OF_BOOLEAN_INPUTS] = {
   LEFT_JOYSTICK_LOWER_BUTTON,
   LEFT_JOYSTICK_UPPER_BUTTON,
@@ -188,7 +197,7 @@ const uint8_t BROKEN_BUTTONS[NUMBER_OF_BOOLEAN_INPUTS] = {
   POSSIBLE STATES
 *************************/
 
-// These are the possible states
+// these are the possible states
 #define PUSHED 4
 #define NOT_PUSHED 0
 
@@ -210,13 +219,37 @@ const uint8_t BROKEN_BUTTONS[NUMBER_OF_BOOLEAN_INPUTS] = {
 #define SCALE_3 3
 #define SCALE_4 4
 
-class Bossy {
+/*
 
+ 0------------1------------2------------3------------4            > SCALE
+ |            |            |            |            |
+ PUSH.........|............|............|............NOT_PUSHED   > button
+ LEFT.........|............|............|............RIGHT        > spdt switch on-on
+ LEFT.........|.........NEUTRAL.........|............RIGHT        > spdt switch on-off-on
+ LEFT....LEFT_CENTER....NEUTRAL.....RIGHT_CENTER.....RIGHT        > joystick x axis
+ UP......UP_CENTER......NEUTRAL.....DOWN_CENTER......DOWN         > joystick y axis
+ UP...........|.........NEUTRAL.........|............DOWN      
+ UP...........|............|............|............DOWN
+ |            |            |            |            |
+ 0------------1------------2------------3------------4            > SCALE
+
+*/
+
+/**********************
+  BOSSY CONTROLLER CLASS
+*************************/
+class Bossy {
 public:
   Bossy(void);
+  // these three functions are READ-ONLY
+  // reads the last saved readings & states
+  // does NOT update or read new signals 
   uint16_t savedReading(const uint8_t input_id);
   uint16_t savedState(const uint8_t input_id);
   uint8_t savedReadingLowRes(const uint8_t input_id);
+  
+  // these four functions has WRITE access
+  // updates readings & states
   uint16_t readValue(const uint8_t input_id);
   uint8_t readState(const uint8_t input_id);
   bool hasChangedState(const uint8_t input_id);
