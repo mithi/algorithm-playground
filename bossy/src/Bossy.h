@@ -177,12 +177,21 @@ const uint8_t BOOLEAN_INPUTS[NUMBER_OF_BOOLEAN_INPUTS] = {
   RIGHT_JOYSTICK_UPPER_BUTTON
 };
 
+const uint8_t BROKEN_BUTTONS[NUMBER_OF_BOOLEAN_INPUTS] = {
+  LEFT_JOYSTICK_LOWER_BUTTON,
+  LEFT_JOYSTICK_UPPER_BUTTON,
+  RIGHT_JOYSTICK_LOWER_BUTTON,
+  RIGHT_JOYSTICK_UPPER_BUTTON
+};
+
 /**********************
   POSSIBLE STATES
 *************************/
 
 // These are the possible states
 #define PUSHED 4
+#define NOT_PUSHED 0
+
 #define NEUTRAL 2
 
 #define DOWN 0
@@ -221,10 +230,12 @@ private:
   void _updateState(const uint8_t input_id);
   void _enableRightMux(void);
   void _enableLeftMux(void);
-  uint16_t _readMux(uint8_t ch);
+  uint16_t _readMux(uint8_t channel);
   uint8_t _constrain(const uint8_t input_id);
+  void _saveDebouncedReading(const uint8_t input_id);
   bool _isButton(const uint8_t input_id);
-
+  bool _isBrokenButton(const uint8_t input_id);
+  void _updateBrokenButton(const uint8_t input_id);
 };
 
 #endif

@@ -19,10 +19,9 @@ Bossy::Bossy(void) {
   digitalWrite(PIN_ENABLE_LEFT_MUX, HIGH);
   digitalWrite(PIN_ENABLE_RIGHT_MUX, HIGH);
 
-  // set all readings to zero
+  // set all readings to a random number, nonsense number
   for (uint8_t input_id = 0; input_id < NUMBER_OF_CHANNELS; input_id++) {
-    _readings[input_id] = 0;
-    _states[input_id] = NEUTRAL;
+    _update(input_id);
   }
 }
 
@@ -38,7 +37,7 @@ uint16_t Bossy::savedState(const uint8_t input_id) {
 
 uint8_t Bossy::savedReadingLowRes(const uint8_t input_id){
   const uint8_t i = _constrain(input_id);
-  return max(_readings[i] / 4, 255);
+  return min(_readings[i] / 4, 255);
 }
 
 uint16_t Bossy::readValue(const uint8_t input_id) {
@@ -63,11 +62,27 @@ bool Bossy::hasChangedState(const uint8_t input_id) {
 bool Bossy::hasChangedReading(const uint8_t input_id) {
   const uint8_t i = _constrain(input_id);
   const uint16_t old_reading = _readings[i];
+
   _update(i);
-  return old_reading != _readings[i] ? true: false;
+  const uint16_t new_reading =  (int) _readings[i];
+
+  // remove noise, especially of potentiometer
+  const uint16_t TOL = 2;
+
+  if (old_reading > new_reading) {
+    return old_reading - new_reading > TOL;
+  }
+
+  return new_reading - old_reading > TOL;
 }
 
 void Bossy::_update(const uint8_t input_id) {
+
+  if (_isBrokenButton(input_id)) {
+    _updateBrokenButton(input_id);
+    return;
+  }
+
   _updateReading(input_id);
   _updateState(input_id);
 }
@@ -76,21 +91,6 @@ void Bossy::_updateState(const uint8_t input_id) {
   const uint16_t reading = _readings[input_id];
   const bool input_type = INPUT_TYPE[input_id];
 
-  // update if a button input
-  if (_isButton(input_id)) {
-    const uint16_t MIN_THRESH = 100;
-    const uint16_t MAX_THRESH = 900;
-
-    if (input_type == NORMAL) {
-      _states[input_id] = reading > MAX_THRESH ? PUSHED : NEUTRAL;
-    } else {
-      _states[input_id] = reading < MIN_THRESH ? PUSHED : NEUTRAL;
-    }
-    return;
-  }
-
-  // update if a non-button input
-  // 0, 200, 400, 600, 800
   if (input_type == NORMAL) {
     if (reading < 200) { _states[input_id] = SCALE_0; return; }
     if (reading < 400) { _states[input_id] = SCALE_1; return; }
@@ -109,28 +109,17 @@ void Bossy::_updateState(const uint8_t input_id) {
 void Bossy::_updateReading(const uint8_t input_id) {
 
   // check and enable multiplexer we are suppose to read from
-  if (input_id >= MUX_LEFT_MIN && input_id <= MUX_LEFT_MAX) {
-    _enableLeftMux();
-  } else {
-    _enableRightMux();
-  }
+  const bool is_left_mux = input_id >= MUX_LEFT_MIN && input_id <= MUX_LEFT_MAX;
+  is_left_mux ? _enableLeftMux() : _enableRightMux();
 
-  // read the appropriate channel of that multiplexer
-  const uint8_t channel = INPUT_CHANNEL[input_id];
-  uint16_t value = _readMux(channel);
-
+  // if it's a button, debounce it
   if (_isButton(input_id)) {
-    // THERE ARE BETTER WAYS TO DEBOUNCE A BUTTON but this is good enough
-    _delay_ms(10);
-    uint16_t new_value = _readMux(channel);
-    // if the new value is not same as the value before throw these values away
-    if (new_value != value) {
-      value = _readings[input_id];
-    }
+    _saveDebouncedReading(input_id);
+    return;
   }
 
-  // finally update the value
-  _readings[input_id] = value;
+  const uint8_t channel = INPUT_CHANNEL[input_id];
+  _readings[input_id] = _readMux(channel);
 }
 
 void Bossy::_enableLeftMux(void) {
@@ -139,8 +128,8 @@ void Bossy::_enableLeftMux(void) {
 }
 
 void Bossy::_enableRightMux(void) {
-  digitalWrite(PIN_ENABLE_LEFT_MUX, LOW);
-  digitalWrite(PIN_ENABLE_RIGHT_MUX, HIGH);
+  digitalWrite(PIN_ENABLE_LEFT_MUX, HIGH);
+  digitalWrite(PIN_ENABLE_RIGHT_MUX, LOW);
 }
 
 uint16_t Bossy::_readMux(const uint8_t channel) {
@@ -173,13 +162,61 @@ uint16_t Bossy::_readMux(const uint8_t channel) {
   return analogRead(PIN_SIGNAL);
 }
 
+bool Bossy::_isButton(const uint8_t input_id) {
+  for (uint8_t i = 0; i < NUMBER_OF_BOOLEAN_INPUTS; i++) {
+    if (BOOLEAN_INPUTS[i]==input_id) { return true; }
+  }
+  return false;
+}
+
+void Bossy::_saveDebouncedReading(const uint8_t input_id) {
+  const uint8_t channel = INPUT_CHANNEL[input_id];
+
+  const uint16_t saved_reading =  _readings[input_id];
+  const uint16_t reading = _readMux(channel);
+
+  if (saved_reading != reading) {
+    _delay_ms(5);
+    uint16_t second_reading = _readMux(channel);
+    if (second_reading == reading) {
+      _readings[input_id] = reading;
+    }
+  }
+}
+
 uint8_t Bossy::_constrain(const uint8_t input_id) {
   return min(max(0, input_id), NUMBER_OF_CHANNELS - 1);
 }
 
-bool Bossy::_isButton(const uint8_t input_id) {
-  for (uint8_t i = 0; i < NUMBER_OF_BOOLEAN_INPUTS; i++) {
-    if(BOOLEAN_INPUTS[i]==input_id) { return true; }
+bool Bossy::_isBrokenButton(const uint8_t input_id) {
+  for (uint8_t i = 0; i < 4; i++) {
+    if (BROKEN_BUTTONS[i]==input_id) { return true; }
   }
   return false;
 }
+
+void Bossy::_updateBrokenButton(const uint8_t input_id) {
+
+  const bool is_left_mux = input_id >= MUX_LEFT_MIN && input_id <= MUX_LEFT_MAX;
+  is_left_mux ? _enableLeftMux() : _enableRightMux();
+
+  const uint8_t channel = INPUT_CHANNEL[input_id];
+  const uint16_t saved_reading = _readings[input_id];
+
+  uint16_t reading = _readMux(channel);
+  reading = reading == 0 ? 0 : 1023;
+
+  if (saved_reading != reading) {
+
+    _delay_ms(50);
+    uint16_t second_reading = _readMux(channel);
+    second_reading = second_reading == 0 ? 0 : 1023;
+
+    if (second_reading == reading) {
+      _readings[input_id] = reading;
+    }
+  }
+
+  _states[input_id] = _readings[input_id] == 0 ? PUSHED : NOT_PUSHED;
+}
+
